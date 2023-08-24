@@ -1,35 +1,93 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
+
 import 'package:warranty_app/utils/status.dart';
 
 class Report {
-  final int _reportId;
-  final String _customerId;
-  final int _productId;
-  Status _status;
-  final DateTime _createAt;
-  final String _description;
-  Report(
-      {required int reportId,
-      required String customerId,
-      required int productId,
-      required String description,
-      required DateTime createAt})
-      : _reportId = reportId,
-        _customerId = customerId,
-        _productId = productId,
-        _createAt = createAt,
-        _status = Status.pending,
-        _description = description;
-  get reportId => _reportId;
+  final int reportId;
+  final String customerId;
+  final int productId;
+  Status status;
+  final DateTime createAt;
+  final String description;
+  Report({
+    required this.reportId,
+    required this.customerId,
+    required this.productId,
+    required this.status,
+    required this.createAt,
+    required this.description,
+  });
 
-  get customerId => _customerId;
+  Report copyWith({
+    int? reportId,
+    String? customerId,
+    int? productId,
+    Status? status,
+    DateTime? createAt,
+    String? description,
+  }) {
+    return Report(
+      reportId: reportId ?? this.reportId,
+      customerId: customerId ?? this.customerId,
+      productId: productId ?? this.productId,
+      status: status ?? this.status,
+      createAt: createAt ?? this.createAt,
+      description: description ?? this.description,
+    );
+  }
 
-  get productId => _productId;
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'reportId': reportId,
+      'customerId': customerId,
+      'productId': productId,
+      'status': status.index,
+      'createAt': createAt.millisecondsSinceEpoch,
+      'description': description,
+    };
+  }
 
-  get status => _status;
+  factory Report.fromMap(Map<String, dynamic> map) {
+    return Report(
+      reportId: map['reportId'] as int,
+      customerId: map['customerId'] as String,
+      productId: map['productId'] as int,
+      status: Status.values[map['status']],
+      createAt: DateTime.fromMillisecondsSinceEpoch(map['createAt'] as int),
+      description: map['description'] as String,
+    );
+  }
 
-  set status(value) => _status = value;
+  String toJson() => json.encode(toMap());
 
-  get createAt => _createAt;
+  factory Report.fromJson(String source) =>
+      Report.fromMap(json.decode(source) as Map<String, dynamic>);
 
-  get description => _description;
+  @override
+  String toString() {
+    return 'Report(reportId: $reportId, customerId: $customerId, productId: $productId, status: $status, createAt: $createAt, description: $description)';
+  }
+
+  @override
+  bool operator ==(covariant Report other) {
+    if (identical(this, other)) return true;
+
+    return other.reportId == reportId &&
+        other.customerId == customerId &&
+        other.productId == productId &&
+        other.status == status &&
+        other.createAt == createAt &&
+        other.description == description;
+  }
+
+  @override
+  int get hashCode {
+    return reportId.hashCode ^
+        customerId.hashCode ^
+        productId.hashCode ^
+        status.hashCode ^
+        createAt.hashCode ^
+        description.hashCode;
+  }
 }

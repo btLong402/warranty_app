@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "252765560146",
+    "project_id": "warranty-app-8f644",
+    "storage_bucket": "warranty-app-8f644.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:252765560146:android:5f7dd656f7f126cc05ae8b",
+        "android_client_info": {
+          "package_name": "com.example.warranty_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "252765560146-1r7nac22divvufrlecu7e0bimtq4dh19.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATzdoqXREjgtEtKdKswiesr6M34Q3vfdY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "252765560146-1r7nac22divvufrlecu7e0bimtq4dh19.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
