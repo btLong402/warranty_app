@@ -8,9 +8,7 @@ class SupporterDBService extends BaseService with AdvancedService {
 
   Future createSession(String reportId, String description) async {
     String reportSSId = const Uuid().v4();
-    return await reportSessionCollection
-        .doc(reportSSId)
-        .set({
+    return await reportSessionCollection.doc(reportSSId).set({
       "reportSessionId": reportSSId,
       "reportId": reportId,
       "supportId": uid,
@@ -29,9 +27,7 @@ class SupporterDBService extends BaseService with AdvancedService {
 
   Future createTask(String employeeId, String reportId) async {
     String taskId = const Uuid().v4();
-    return await taskCollection
-        .doc(taskId)
-        .set({
+    return await taskCollection.doc(taskId).set({
       "taskId": taskId,
       "reportId": reportId,
       "employeeId": employeeId,
@@ -45,5 +41,29 @@ class SupporterDBService extends BaseService with AdvancedService {
   Future queryPurchaseHistory({String? customerId}) async {
     DocumentSnapshot snapshot = await purchaseCollection.doc(customerId).get();
     return snapshot;
+  }
+
+  Future updatePlanStatus({required String planId, required int status}) async {
+    await planCollection.doc(planId).set({
+      "status": status,
+    });
+  }
+
+  Future updateReportStatus({required String reportId, required int status}) async {
+    await reportCollection.doc(reportId).set({
+      'status' : status,
+    });
+  }
+
+  Future updateSessionStatus({required String reportSSId, required int status}) async {
+    await reportSessionCollection.doc(reportSSId).set({
+      'status' : status,
+    });
+  }
+
+  Future updateTaskStatus({required String taskId, required int status}) async {
+    await taskCollection.doc(taskId).set({
+      'status': status,
+    });
   }
 }

@@ -7,13 +7,11 @@ class Plan {
   final int planId;
   final int taskId;
   String? itemErrorId;
-  String? itemPlaceId;
   Status status;
   Plan({
     required this.planId,
     required this.taskId,
     this.itemErrorId,
-    this.itemPlaceId,
     required this.status,
   });
   
@@ -22,14 +20,12 @@ class Plan {
     int? planId,
     int? taskId,
     String? itemErrorId,
-    String? itemPlaceId,
     Status? status,
   }) {
     return Plan(
       planId: planId ?? this.planId,
       taskId: taskId ?? this.taskId,
       itemErrorId: itemErrorId ?? this.itemErrorId,
-      itemPlaceId: itemPlaceId ?? this.itemPlaceId,
       status: status ?? this.status,
     );
   }
@@ -39,7 +35,6 @@ class Plan {
       'planId': planId,
       'taskId': taskId,
       'itemErrorId': itemErrorId,
-      'itemPlaceId': itemPlaceId,
       'status': status.index,
     };
   }
@@ -49,7 +44,6 @@ class Plan {
       planId: map['planId'] as int,
       taskId: map['taskId'] as int,
       itemErrorId: map['itemErrorId'] != null ? map['itemErrorId'] as String : null,
-      itemPlaceId: map['itemPlaceId'] != null ? map['itemPlaceId'] as String : null,
       status: Status.values[map['status']],
     );
   }
@@ -60,7 +54,7 @@ class Plan {
 
   @override
   String toString() {
-    return 'Plan(planId: $planId, taskId: $taskId, itemErrorId: $itemErrorId, itemPlaceId: $itemPlaceId, status: $status)';
+    return 'Plan(planId: $planId, taskId: $taskId, itemErrorId: $itemErrorId, status: $status)';
   }
 
   @override
@@ -71,7 +65,6 @@ class Plan {
       other.planId == planId &&
       other.taskId == taskId &&
       other.itemErrorId == itemErrorId &&
-      other.itemPlaceId == itemPlaceId &&
       other.status == status;
   }
 
@@ -80,7 +73,6 @@ class Plan {
     return planId.hashCode ^
       taskId.hashCode ^
       itemErrorId.hashCode ^
-      itemPlaceId.hashCode ^
       status.hashCode;
   }
 }

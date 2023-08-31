@@ -4,19 +4,19 @@ import 'dart:convert';
 import 'package:warranty_app/utils/constant.dart';
 
 class Report {
-  final int reportId;
-  final String customerId;
-  final int productId;
-  Status status;
-  final DateTime createAt;
-  final String description;
+  final int? reportId;
+  final String? customerId;
+  final int? productId;
+  Status? status;
+  final DateTime? createAt;
+  final String? description;
   Report({
-    required this.reportId,
-    required this.customerId,
-    required this.productId,
-    required this.status,
-    required this.createAt,
-    required this.description,
+    this.reportId,
+    this.customerId,
+    this.productId,
+    this.status,
+    this.createAt,
+    this.description,
   });
 
   Report copyWith({
@@ -42,8 +42,8 @@ class Report {
       'reportId': reportId,
       'customerId': customerId,
       'productId': productId,
-      'status': status.index,
-      'createAt': createAt.millisecondsSinceEpoch,
+      'status': status!.index,
+      'createAt': createAt!.millisecondsSinceEpoch,
       'description': description,
     };
   }

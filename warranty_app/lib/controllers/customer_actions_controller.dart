@@ -31,8 +31,9 @@ class CustomerActionsController extends BaseController {
     }
   }
 
-  Future<void> getReport() async {
+  Future<void> queryReport() async {
     try {
+      clearReportList();
       QuerySnapshot snapshot = await cloudService.queryReport();
       List<Report> reports = snapshot.docs.map((DocumentSnapshot doc) {
         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
@@ -47,8 +48,9 @@ class CustomerActionsController extends BaseController {
     }
   }
 
-  Future<void> getReportSession({required String reportId}) async {
+  Future<void> queryReportSession({required String reportId}) async {
     try {
+      clearReportSessionList();
       QuerySnapshot snapshot =
           await cloudService.queryReportSession(reportId: reportId);
       List<ReportSession> sessions = snapshot.docs.map((DocumentSnapshot doc) {
@@ -64,8 +66,9 @@ class CustomerActionsController extends BaseController {
     }
   }
 
-  Future<void> getTasks({required String reportId}) async {
+  Future<void> queryTasks({required String reportId}) async {
     try {
+      clearTaskList();
       QuerySnapshot snapshot = await cloudService.queryTask(reportId: reportId);
       List<Task> tasks = snapshot.docs.map((DocumentSnapshot doc) {
         Map<String, dynamic> map = doc.data() as Map<String, dynamic>;
@@ -80,8 +83,9 @@ class CustomerActionsController extends BaseController {
     }
   }
 
-  Future<void> getPurchaseHistory() async {
+  Future<void> queryPurchaseHistory() async {
     try {
+      clearPurchase();
       QuerySnapshot snapshot = await cloudService.queryPurchaseHistory();
       List<PurchaseHistoryModel> purchases =
           snapshot.docs.map((DocumentSnapshot doc) {
@@ -99,8 +103,9 @@ class CustomerActionsController extends BaseController {
     }
   }
 
-    Future<void> getPlan({required String taskId}) async {
+    Future<void> queryPlan({required String taskId}) async {
     try {
+      clearPlanList();
       QuerySnapshot snapshot = await cloudService.queryPlan(taskId: taskId);
       List<Plan> plans = snapshot.docs.map((DocumentSnapshot doc) {
         Map<String, dynamic> map = doc.data() as Map<String, dynamic>;

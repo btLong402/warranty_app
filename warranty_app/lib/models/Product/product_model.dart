@@ -5,23 +5,20 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
-import 'package:warranty_app/models/Item/item_model.dart';
-
 class Product {
-  final int productId;
+  final String productId;
   final String name;
-  final List<Item> itemList;
+  final List<String> itemList;
   Product({
     required this.productId,
     required this.name,
     required this.itemList,
   });
-  
 
   Product copyWith({
-    int? productId,
+    String? productId,
     String? name,
-    List<Item>? itemList,
+    List<String>? itemList,
   }) {
     return Product(
       productId: productId ?? this.productId,
@@ -34,33 +31,35 @@ class Product {
     return <String, dynamic>{
       'productId': productId,
       'name': name,
-      'itemList': itemList.map((x) => x.toMap()).toList(),
+      'itemList': itemList,
     };
   }
 
   factory Product.fromMap(Map<String, dynamic> map) {
     return Product(
-      productId: map['productId'] as int,
-      name: map['name'] as String,
-      itemList: List<Item>.from((map['itemList'] as List<int>).map<Item>((x) => Item.fromMap(x as Map<String,dynamic>),),),
-    );
+        productId: map['productId'] as String,
+        name: map['name'] as String,
+        itemList: List<String>.from(
+          (map['itemList'] as List<String>),
+        ));
   }
 
   String toJson() => json.encode(toMap());
 
-  factory Product.fromJson(String source) => Product.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory Product.fromJson(String source) =>
+      Product.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
-  String toString() => 'Product(productId: $productId, name: $name, itemList: $itemList)';
+  String toString() =>
+      'Product(productId: $productId, name: $name, itemList: $itemList)';
 
   @override
   bool operator ==(covariant Product other) {
     if (identical(this, other)) return true;
-  
-    return 
-      other.productId == productId &&
-      other.name == name &&
-      listEquals(other.itemList, itemList);
+
+    return other.productId == productId &&
+        other.name == name &&
+        listEquals(other.itemList, itemList);
   }
 
   @override

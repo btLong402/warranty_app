@@ -13,14 +13,12 @@ class EmployeeDBService extends BaseService {
 
   Future createPlan(
       {required String taskId,
-      String? itemErrorId,
-      String? itemPlaceId}) async {
+      String? itemErrorId}) async {
     String planId = const Uuid().v4();
     return await planCollection.doc(planId).set({
       "planId": planId,
       "taskId": taskId,
       "itemErrorId": itemErrorId ?? '',
-      "itemPlaceId": itemPlaceId ?? '',
       "status" : 0,
     });
   }

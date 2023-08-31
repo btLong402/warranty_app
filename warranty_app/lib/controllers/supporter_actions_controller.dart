@@ -6,6 +6,7 @@ import 'package:warranty_app/controllers/base_controller.dart';
 import 'package:warranty_app/models/Plan/plan_model.dart';
 import 'package:warranty_app/models/Purchase%20History/purchase_history_model.dart';
 import 'package:warranty_app/models/Report/report_model.dart';
+import 'package:warranty_app/models/Report/report_session_model.dart';
 import 'package:warranty_app/models/Task/task_model.dart';
 import 'package:warranty_app/services/db/supporter_cloud_service.dart';
 
@@ -31,6 +32,7 @@ class SupporterActionsController extends BaseController {
 
   Future<void> queryReport({int? status}) async {
     try {
+      clearReportList();
       int status0 = status ?? 2;
       QuerySnapshot snapshot = await cloudService.queryReport(status: status0);
       List<Report> reports = snapshot.docs.map((DocumentSnapshot doc) {
@@ -38,6 +40,24 @@ class SupporterActionsController extends BaseController {
         return Report.fromMap(data);
       }).toList();
       reportList.addAll(reports);
+    } catch (e) {
+      Get.snackbar("Error", e.toString(),
+          snackPosition: SnackPosition.TOP,
+          colorText: Colors.white,
+          backgroundColor: Colors.red);
+    }
+  }
+
+  Future <void> queryReportSession({required String reportId}) async {
+    try {
+      clearReportSessionList();
+      QuerySnapshot snapshot =
+          await cloudService.queryReportSession(reportId: reportId);
+      List<ReportSession> sessions = snapshot.docs.map((DocumentSnapshot doc) {
+        Map<String, dynamic> map = doc.data() as Map<String, dynamic>;
+        return ReportSession.fromMap(map);
+      }).toList();
+      reportSessionList.addAll(sessions);
     } catch (e) {
       Get.snackbar("Error", e.toString(),
           snackPosition: SnackPosition.TOP,
@@ -62,8 +82,9 @@ class SupporterActionsController extends BaseController {
     }
   }
 
-  Future<void> getTask({required String reportId}) async {
+  Future<void> queryTask({required String reportId}) async {
     try {
+      clearTaskList();
       QuerySnapshot snapshot = await cloudService.queryTask(reportId: reportId);
       List<Task> tasks = snapshot.docs.map((DocumentSnapshot doc) {
         Map<String, dynamic> map = doc.data() as Map<String, dynamic>;
@@ -78,8 +99,9 @@ class SupporterActionsController extends BaseController {
     }
   }
 
-  Future<void> getPlan({required String taskId}) async {
+  Future<void> queryPlan({required String taskId}) async {
     try {
+      clearPlanList();
       QuerySnapshot snapshot = await cloudService.queryPlan(taskId: taskId);
       List<Plan> plans = snapshot.docs.map((DocumentSnapshot doc) {
         Map<String, dynamic> map = doc.data() as Map<String, dynamic>;
@@ -94,8 +116,9 @@ class SupporterActionsController extends BaseController {
     }
   }
 
-  Future<void> getPurchaseHistory({required String customerId}) async {
+  Future<void> queryPurchaseHistory({required String customerId}) async {
     try {
+      clearPurchase();
       QuerySnapshot snapshot =
           await cloudService.queryPurchaseHistory(customerId: customerId);
       List<PurchaseHistoryModel> purchases =
@@ -106,6 +129,78 @@ class SupporterActionsController extends BaseController {
       purchase.value = PurchaseHistoryModel().copyWith(
           customerId: purchases[0].customerId,
           productIdList: purchases[0].productIdList);
+    } catch (e) {
+      Get.snackbar("Error", e.toString(),
+          snackPosition: SnackPosition.TOP,
+          colorText: Colors.white,
+          backgroundColor: Colors.red);
+    }
+  }
+
+  Future<void> updatePlanStatus(
+      {required String planId, required int status}) async {
+    try {
+      await cloudService
+          .updatePlanStatus(planId: planId, status: status)
+          .whenComplete(() => Get.snackbar(
+              "Success", "You have updated it successfully!",
+              snackPosition: SnackPosition.TOP,
+              colorText: Colors.white,
+              backgroundColor: Colors.green));
+    } catch (e) {
+      Get.snackbar("Error", e.toString(),
+          snackPosition: SnackPosition.TOP,
+          colorText: Colors.white,
+          backgroundColor: Colors.red);
+    }
+  }
+
+  Future<void> updateReportStatus(
+      {required String reportId, required int status}) async {
+    try {
+      await cloudService
+          .updateReportStatus(reportId: reportId, status: status)
+          .whenComplete(() => Get.snackbar(
+              "Success", "You have updated it successfully!",
+              snackPosition: SnackPosition.TOP,
+              colorText: Colors.white,
+              backgroundColor: Colors.green));
+    } catch (e) {
+      Get.snackbar("Error", e.toString(),
+          snackPosition: SnackPosition.TOP,
+          colorText: Colors.white,
+          backgroundColor: Colors.red);
+    }
+  }
+
+  Future<void> updateReportSessionStatus(
+      {required String reportSessionId, required int status}) async {
+    try {
+      await cloudService
+          .updateSessionStatus(reportSSId: reportSessionId, status: status)
+          .whenComplete(() => Get.snackbar(
+              "Success", "You have updated it successfully!",
+              snackPosition: SnackPosition.TOP,
+              colorText: Colors.white,
+              backgroundColor: Colors.green));
+    } catch (e) {
+      Get.snackbar("Error", e.toString(),
+          snackPosition: SnackPosition.TOP,
+          colorText: Colors.white,
+          backgroundColor: Colors.red);
+    }
+  }
+
+  Future<void> updateTaskStatus(
+      {required String taskId, required int status}) async {
+    try {
+      await cloudService
+          .updateTaskStatus(taskId: taskId, status: status)
+          .whenComplete(() => Get.snackbar(
+              "Success", "You have updated it successfully!",
+              snackPosition: SnackPosition.TOP,
+              colorText: Colors.white,
+              backgroundColor: Colors.green));
     } catch (e) {
       Get.snackbar("Error", e.toString(),
           snackPosition: SnackPosition.TOP,
