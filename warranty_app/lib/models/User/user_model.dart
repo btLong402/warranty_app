@@ -1,27 +1,31 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
-
-import 'package:warranty_app/utils/User/user_role.dart';
+import 'package:warranty_app/utils/constant.dart';
 
 class UserModel {
-  final String userId;
-  final String userName;
-  final int contact;
-  final UserRole role;
-  UserModel({
-    required this.userId,
-    required this.userName,
-    required this.contact,
-    required this.role,
+  final String? userId;
+  final String? email;
+  final String? userName;
+  final String? contact;
+  final UserRole? role;
+  UserModel(
+  {
+    this.email, 
+    this.userId,
+    this.userName,
+    this.contact,
+    this.role,
   });
 
   UserModel copyWith({
+    String? email,
     String? userId,
     String? userName,
-    int? contact,
+    String? contact,
     UserRole? role,
   }) {
     return UserModel(
+      email: email?? this.email,
       userId: userId ?? this.userId,
       userName: userName ?? this.userName,
       contact: contact ?? this.contact,
@@ -34,15 +38,16 @@ class UserModel {
       'userId': userId,
       'userName': userName,
       'contact': contact,
-      'role': role.index,
+      'role': role!.index,
     };
   }
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
       userId: map['userId'] as String,
+      email: map['email'] as String,
       userName: map['userName'] as String,
-      contact: map['contact'] as int,
+      contact: map['contact'] as String,
       role: UserRole.values[map['role']],
     );
   }

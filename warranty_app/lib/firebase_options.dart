@@ -44,39 +44,39 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyAmBFXgywW0lEvSco23t_v-pn89J7WbkGA',
-    appId: '1:252765560146:web:e986750a1c75355905ae8b',
-    messagingSenderId: '252765560146',
-    projectId: 'warranty-app-8f644',
-    authDomain: 'warranty-app-8f644.firebaseapp.com',
-    storageBucket: 'warranty-app-8f644.appspot.com',
+    apiKey: 'AIzaSyD5_GWk81_RnqxpWhSr005w4z_XfOIavqk',
+    appId: '1:27847717838:web:3197d33a22fee7d4c0f19f',
+    messagingSenderId: '27847717838',
+    projectId: 'warranty-app-40437',
+    authDomain: 'warranty-app-40437.firebaseapp.com',
+    storageBucket: 'warranty-app-40437.appspot.com',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyATzdoqXREjgtEtKdKswiesr6M34Q3vfdY',
-    appId: '1:252765560146:android:5f7dd656f7f126cc05ae8b',
-    messagingSenderId: '252765560146',
-    projectId: 'warranty-app-8f644',
-    storageBucket: 'warranty-app-8f644.appspot.com',
+    apiKey: 'AIzaSyB_NreVC74LYpmdet98rLHnv0EoRvJTfPw',
+    appId: '1:27847717838:android:0f786f97543da006c0f19f',
+    messagingSenderId: '27847717838',
+    projectId: 'warranty-app-40437',
+    storageBucket: 'warranty-app-40437.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCU1uBMExq9NPB4yzt2XqrmDkSQGiNcwrY',
-    appId: '1:252765560146:ios:749536800d3a2b6005ae8b',
-    messagingSenderId: '252765560146',
-    projectId: 'warranty-app-8f644',
-    storageBucket: 'warranty-app-8f644.appspot.com',
-    iosClientId: '252765560146-b8upv72r4v7cjsopj0807m7a10talcps.apps.googleusercontent.com',
+    apiKey: 'AIzaSyAAumzZsLhrSSYLNo5-N3jjiZAUUI3sj8M',
+    appId: '1:27847717838:ios:3ed26bc058a53807c0f19f',
+    messagingSenderId: '27847717838',
+    projectId: 'warranty-app-40437',
+    storageBucket: 'warranty-app-40437.appspot.com',
+    iosClientId: '27847717838-je4mhtr1nroqt44mocvs944nvlf04491.apps.googleusercontent.com',
     iosBundleId: 'com.example.warrantyApp',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyCU1uBMExq9NPB4yzt2XqrmDkSQGiNcwrY',
-    appId: '1:252765560146:ios:5abc3cd73850631005ae8b',
-    messagingSenderId: '252765560146',
-    projectId: 'warranty-app-8f644',
-    storageBucket: 'warranty-app-8f644.appspot.com',
-    iosClientId: '252765560146-l4divoqta7j11lq8ai66dmf73n4g9c2a.apps.googleusercontent.com',
+    apiKey: 'AIzaSyAAumzZsLhrSSYLNo5-N3jjiZAUUI3sj8M',
+    appId: '1:27847717838:ios:2f2681a071610c41c0f19f',
+    messagingSenderId: '27847717838',
+    projectId: 'warranty-app-40437',
+    storageBucket: 'warranty-app-40437.appspot.com',
+    iosClientId: '27847717838-drnui976pkg60vcj51feh4gniaqng0gg.apps.googleusercontent.com',
     iosBundleId: 'com.example.warrantyApp.RunnerTests',
   );
 }

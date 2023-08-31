@@ -3,6 +3,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:get/get.dart';
 import 'package:warranty_app/controllers/auth_controller.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:warranty_app/utils/utils.dart';
 import 'package:warranty_app/views/auth/sign_up_screen.dart';
 
 class SignIn extends StatelessWidget {
@@ -87,9 +88,16 @@ class SignIn extends StatelessWidget {
               ),
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
-                  authController.login(
-                      _formKey.currentState!.fields['email']?.value,
-                      _formKey.currentState!.fields['password']?.value);
+                  authController
+                      .login(_formKey.currentState!.fields['email']?.value,
+                          _formKey.currentState!.fields['password']?.value)
+                      .then((value) {
+                    if (value == true) {
+                      success(context, 'Success to login', "Welcome back! ");
+                    } else {
+                      failure(context, 'Failure to login!', value);
+                    }
+                  });
                 }
               },
             ),

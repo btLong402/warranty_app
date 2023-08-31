@@ -1,5 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:warranty_app/services/auth/auth_service.dart';
+import 'package:warranty_app/views/auth/sign_in_screen.dart';
+import 'package:warranty_app/views/home_view.dart';
 
 class AuthController extends GetxController {
   late Rx<User?> user;
@@ -13,24 +16,16 @@ class AuthController extends GetxController {
     ever(user, _initialScreen);
   }
 
-  void register(String email, String password) async {
-    try {
-      await _auth.createUserWithEmailAndPassword(
-          email: email.trim(), password: password.trim());
-    } catch (e) {
-      Get.snackbar('Can\'t create account ', e.toString(),
-          snackPosition: SnackPosition.TOP);
-    }
+ register(String email, String password, String fullName,
+      String phoneNumber) async {
+    return await AuthService()
+        .register(email.trim(), password.trim(), phoneNumber, fullName)
+    ;
   }
 
-  void login(String email, String password) async {
-    try {
-      await _auth.signInWithEmailAndPassword(
-          email: email.trim(), password: password.trim());
-    } catch (e) {
-      Get.snackbar('Can\'t Sign in ', e.toString(),
-          snackPosition: SnackPosition.TOP);
-    }
+  login(String email, String password) async {
+    // ignore: void_checks
+    return await AuthService().login(email.trim(), password.trim());
   }
 
   void logout() async {
@@ -38,10 +33,10 @@ class AuthController extends GetxController {
   }
 
   _initialScreen(User? user) {
-    if(user == null){
-
+    if (user == null) {
+      Get.offAll(() => SignIn());
     } else {
-      
+      Get.offAll(() => HomeView());
     }
   }
 }

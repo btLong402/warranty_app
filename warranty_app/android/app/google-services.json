@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "252765560146",
-    "project_id": "warranty-app-8f644",
-    "storage_bucket": "warranty-app-8f644.appspot.com"
+    "project_number": "27847717838",
+    "project_id": "warranty-app-40437",
+    "storage_bucket": "warranty-app-40437.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:252765560146:android:5f7dd656f7f126cc05ae8b",
+        "mobilesdk_app_id": "1:27847717838:android:0f786f97543da006c0f19f",
         "android_client_info": {
           "package_name": "com.example.warranty_app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "252765560146-1r7nac22divvufrlecu7e0bimtq4dh19.apps.googleusercontent.com",
+          "client_id": "27847717838-h689p3ie82l9ft16p59urjnp7l97lqve.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyATzdoqXREjgtEtKdKswiesr6M34Q3vfdY"
+          "current_key": "AIzaSyB_NreVC74LYpmdet98rLHnv0EoRvJTfPw"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "252765560146-1r7nac22divvufrlecu7e0bimtq4dh19.apps.googleusercontent.com",
+              "client_id": "27847717838-h689p3ie82l9ft16p59urjnp7l97lqve.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

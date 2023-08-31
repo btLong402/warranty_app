@@ -5,6 +5,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
 import 'package:warranty_app/controllers/auth_controller.dart';
+import 'package:warranty_app/utils/utils.dart';
 
 class SignUp extends StatelessWidget {
   SignUp({super.key});
@@ -54,7 +55,7 @@ class SignUp extends StatelessWidget {
                           FormBuilderValidators.equalLength(10),
                         ]),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       FormBuilderTextField(
                         name: 'email',
                         decoration: const InputDecoration(labelText: 'Email'),
@@ -78,21 +79,8 @@ class SignUp extends StatelessWidget {
                       FormBuilderTextField(
                         name: 'confirm_password',
                         autovalidateMode: AutovalidateMode.onUserInteraction,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Confirm Password',
-                          suffixIcon: Icon(
-                              _formKey.currentState?.fields['confirm_password']
-                                          ?.hasError ==
-                                      false
-                                  ? Icons.error
-                                  : Icons.check,
-                              color: _formKey
-                                          .currentState
-                                          ?.fields['confirm_password']
-                                          ?.hasError ==
-                                      false
-                                  ? Colors.red
-                                  : Colors.green),
                         ),
                         obscureText: true,
                         validator: (value) =>
@@ -137,9 +125,22 @@ class SignUp extends StatelessWidget {
                 ),
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    authController.register(
-                        _formKey.currentState!.fields['email']?.value,
-                        _formKey.currentState!.fields['password']?.value);
+                    authController
+                        .register(
+                      _formKey.currentState!.fields['email']?.value,
+                      _formKey.currentState!.fields['password']?.value,
+                      _formKey.currentState!.fields['full_name']?.value,
+                      _formKey.currentState!.fields['phone']?.value,
+                    )
+                        .then((value) {
+                      if (value == true) {
+                        //
+                        success(
+                            context, 'Success to register', 'Welcome here!');
+                      } else {
+                        failure(context, 'Failure to register!', value);
+                      }
+                    });
                   }
                 },
               ),
