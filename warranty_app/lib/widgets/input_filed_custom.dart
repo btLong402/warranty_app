@@ -41,6 +41,7 @@ class _InputFieldState extends State<InputField> {
         ),
         TextFormField(
           controller: widget.controller,
+          maxLines: 5,
           // ignore: body_might_complete_normally_nullable
           validator: (value) {
             if (value.toString().isEmpty) {

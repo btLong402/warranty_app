@@ -6,6 +6,7 @@ import 'package:warranty_app/utils/constant.dart';
 import 'package:warranty_app/views/customer/customer_home.dart';
 import 'package:warranty_app/views/employee/employee_home.dart';
 import 'package:warranty_app/views/supporter/supporter_home.dart';
+import 'package:warranty_app/widgets/loading.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -15,34 +16,32 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  final UserController userController = Get.find();
-  @override
-  void initState() {
-    // TODO: implement initState
-    setUp();
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
-    return _home();
-  }
+    final UserController userController = Get.put(UserController());
 
-  Future<void> setUp() async {
-    WidgetsFlutterBinding.ensureInitialized();
-    await userController.getUserData();
-  }
-
-  Widget _home() {
     return Obx(() {
-      switch (userController.user.value.role) {
+      userController.getUserData();
+      final userRole = userController.user.value.role;
+
+      Widget homeWidget;
+
+      switch (userRole) {
         case UserRole.employee:
-          return const EmployeeHome();
+          homeWidget = const EmployeeHome();
+          break;
         case UserRole.supporter:
-          return const SupporterHome();
+          homeWidget = const SupporterHome();
+          break;
+        case UserRole.customer:
+          homeWidget = const CustomerHome();
+          break;
         default:
-          return const CustomerHome();
+          homeWidget = const LoadingWidget();
+          break;
       }
+
+      return homeWidget;
     });
   }
 }

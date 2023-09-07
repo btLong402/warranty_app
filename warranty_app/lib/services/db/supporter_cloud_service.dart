@@ -20,8 +20,10 @@ class SupporterDBService extends BaseService with AdvancedService {
 
   @override
   Future queryReport({String? reportId, int? status}) async {
-    QuerySnapshot snapshot =
-        await reportCollection.where('status', isEqualTo: status).get();
+    QuerySnapshot snapshot = await reportCollection
+        .where('status', isEqualTo: status)
+        .orderBy('createAt', descending: true)
+        .get();
     return snapshot;
   }
 
@@ -49,15 +51,17 @@ class SupporterDBService extends BaseService with AdvancedService {
     });
   }
 
-  Future updateReportStatus({required String reportId, required int status}) async {
+  Future updateReportStatus(
+      {required String reportId, required int status}) async {
     await reportCollection.doc(reportId).set({
-      'status' : status,
+      'status': status,
     });
   }
 
-  Future updateSessionStatus({required String reportSSId, required int status}) async {
+  Future updateSessionStatus(
+      {required String reportSSId, required int status}) async {
     await reportSessionCollection.doc(reportSSId).set({
-      'status' : status,
+      'status': status,
     });
   }
 

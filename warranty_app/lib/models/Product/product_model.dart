@@ -40,7 +40,7 @@ class Product {
         productId: map['productId'] as String,
         name: map['name'] as String,
         itemList: List<String>.from(
-          (map['itemList'] as List<String>),
+          (map['itemList'] as List<dynamic>),
         ));
   }
 

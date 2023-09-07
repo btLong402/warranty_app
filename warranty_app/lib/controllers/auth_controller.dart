@@ -16,11 +16,10 @@ class AuthController extends GetxController {
     ever(user, _initialScreen);
   }
 
- register(String email, String password, String fullName,
+  register(String email, String password, String fullName,
       String phoneNumber) async {
     return await AuthService()
-        .register(email.trim(), password.trim(), phoneNumber, fullName)
-    ;
+        .register(email.trim(), password.trim(), phoneNumber, fullName);
   }
 
   login(String email, String password) async {
@@ -36,7 +35,7 @@ class AuthController extends GetxController {
     if (user == null) {
       Get.offAll(() => SignIn());
     } else {
-      Get.offAll(() => HomeView());
+      Get.offAll(() => const HomeView());
     }
   }
 }

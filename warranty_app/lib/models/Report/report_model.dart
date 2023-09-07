@@ -4,9 +4,9 @@ import 'dart:convert';
 import 'package:warranty_app/utils/constant.dart';
 
 class Report {
-  final int? reportId;
+  final String? reportId;
   final String? customerId;
-  final int? productId;
+  final String? productId;
   Status? status;
   final DateTime? createAt;
   final String? description;
@@ -20,9 +20,9 @@ class Report {
   });
 
   Report copyWith({
-    int? reportId,
+    String? reportId,
     String? customerId,
-    int? productId,
+    String? productId,
     Status? status,
     DateTime? createAt,
     String? description,
@@ -50,9 +50,9 @@ class Report {
 
   factory Report.fromMap(Map<String, dynamic> map) {
     return Report(
-      reportId: map['reportId'] as int,
+      reportId: map['reportId'] as String,
       customerId: map['customerId'] as String,
-      productId: map['productId'] as int,
+      productId: map['productId'] as String,
       status: Status.values[map['status']],
       createAt: DateTime.fromMillisecondsSinceEpoch(map['createAt'] as int),
       description: map['description'] as String,

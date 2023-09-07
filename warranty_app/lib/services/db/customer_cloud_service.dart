@@ -11,7 +11,7 @@ class CustomerDBService extends BaseService with AdvancedService {
       "reportId": reportId,
       "customerId": uid,
       "productId": productId,
-      "createAt": DateTime.now(),
+      "createAt": DateTime.now().millisecondsSinceEpoch,
       "status": 0,
       "description": description
     });
@@ -19,8 +19,10 @@ class CustomerDBService extends BaseService with AdvancedService {
 
   @override
   Future queryReport({String? reportId, int? status}) async {
-    QuerySnapshot snapshot =
-        await reportCollection.where('customerId', isEqualTo: uid).get();
+    QuerySnapshot snapshot = await reportCollection
+        .where('customerId', isEqualTo: uid)
+        .orderBy('createAt', descending: true)
+        .get();
     return snapshot;
   }
 
@@ -29,5 +31,4 @@ class CustomerDBService extends BaseService with AdvancedService {
     DocumentSnapshot snapshot = await purchaseCollection.doc(uid).get();
     return snapshot;
   }
-
 }

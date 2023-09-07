@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:warranty_app/controllers/base_controller.dart';
+import 'package:warranty_app/controllers/user_controller.dart';
 import 'package:warranty_app/models/Plan/plan_model.dart';
 import 'package:warranty_app/models/Purchase%20History/purchase_history_model.dart';
 import 'package:warranty_app/models/Report/report_model.dart';
@@ -13,18 +14,17 @@ import 'package:warranty_app/services/db/customer_cloud_service.dart';
 
 class CustomerActionsController extends BaseController {
   // final String uid = FirebaseAuth.instance.currentUser!.uid;
-  final CustomerDBService cloudService =
-      CustomerDBService(FirebaseAuth.instance.currentUser!.uid);
   Future<void> createReport(
       {required String productId, required String description}) async {
     try {
-      await cloudService.createReport(productId, description).whenComplete(() =>
+      await CustomerDBService(Get.find<UserController>().user.value.userId!)
+          .createReport(productId, description).whenComplete(() =>
           Get.snackbar("Success", "You have created it successfully!",
               snackPosition: SnackPosition.TOP,
               colorText: Colors.white,
               backgroundColor: Colors.green));
     } catch (e) {
-      Get.snackbar("Error", e.toString(),
+      Get.snackbar("Error ", e.toString(),
           snackPosition: SnackPosition.TOP,
           colorText: Colors.white,
           backgroundColor: Colors.red);
@@ -32,15 +32,16 @@ class CustomerActionsController extends BaseController {
   }
 
   Future<void> queryReport() async {
+    // if (reportList.isNotEmpty) clearReportList();
     try {
-      clearReportList();
-      QuerySnapshot snapshot = await cloudService.queryReport();
+      QuerySnapshot snapshot = await CustomerDBService(Get.find<UserController>().user.value.userId!)
+              .queryReport();
       List<Report> reports = snapshot.docs.map((DocumentSnapshot doc) {
         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
         return Report.fromMap(data);
       }).toList();
-      reportList.addAll(reports);
-    } catch (e) {
+      reportList.assignAll(reports);
+    } on FirebaseAuthException catch (e) {
       Get.snackbar("Error", e.toString(),
           snackPosition: SnackPosition.TOP,
           colorText: Colors.white,
@@ -50,16 +51,17 @@ class CustomerActionsController extends BaseController {
 
   Future<void> queryReportSession({required String reportId}) async {
     try {
-      clearReportSessionList();
+      // clearReportSessionList();
       QuerySnapshot snapshot =
-          await cloudService.queryReportSession(reportId: reportId);
+          await CustomerDBService(Get.find<UserController>().user.value.userId!)
+              .queryReportSession(reportId: reportId);
       List<ReportSession> sessions = snapshot.docs.map((DocumentSnapshot doc) {
         Map<String, dynamic> map = doc.data() as Map<String, dynamic>;
         return ReportSession.fromMap(map);
       }).toList();
-      reportSessionList.addAll(sessions);
-    } catch (e) {
-      Get.snackbar("Error", e.toString(),
+      reportSessionList.assignAll(sessions);
+    } on FirebaseException catch (e) {
+      Get.snackbar("Error with code: ${e.code}", e.message.toString(),
           snackPosition: SnackPosition.TOP,
           colorText: Colors.white,
           backgroundColor: Colors.red);
@@ -68,15 +70,16 @@ class CustomerActionsController extends BaseController {
 
   Future<void> queryTasks({required String reportId}) async {
     try {
-      clearTaskList();
-      QuerySnapshot snapshot = await cloudService.queryTask(reportId: reportId);
+      // clearTaskList();
+      QuerySnapshot snapshot = await CustomerDBService(Get.find<UserController>().user.value.userId!)
+              .queryTask(reportId: reportId);
       List<Task> tasks = snapshot.docs.map((DocumentSnapshot doc) {
         Map<String, dynamic> map = doc.data() as Map<String, dynamic>;
         return Task.fromMap(map);
       }).toList();
-      taskList.addAll(tasks);
-    } catch (e) {
-      Get.snackbar("Error", e.toString(),
+      taskList.assignAll(tasks);
+    } on FirebaseException catch (e) {
+      Get.snackbar("Error with code: ${e.code}", e.message.toString(),
           snackPosition: SnackPosition.TOP,
           colorText: Colors.white,
           backgroundColor: Colors.red);
@@ -85,35 +88,35 @@ class CustomerActionsController extends BaseController {
 
   Future<void> queryPurchaseHistory() async {
     try {
-      clearPurchase();
-      QuerySnapshot snapshot = await cloudService.queryPurchaseHistory();
-      List<PurchaseHistoryModel> purchases =
-          snapshot.docs.map((DocumentSnapshot doc) {
-        Map<String, dynamic> map = doc.data() as Map<String, dynamic>;
-        return PurchaseHistoryModel.fromMap(map);
-      }).toList();
-      purchase.value = PurchaseHistoryModel().copyWith(
-          customerId: purchases[0].customerId,
-          productIdList: purchases[0].productIdList);
-    } catch (e) {
-      Get.snackbar("Error", e.toString(),
+      // clearPurchase();
+      DocumentSnapshot snapshot = await CustomerDBService(Get.find<UserController>().user.value.userId!)
+              .queryPurchaseHistory();
+      if (snapshot.exists) {
+        PurchaseHistoryModel data = PurchaseHistoryModel.fromMap(
+            snapshot.data() as Map<String, dynamic>);
+        purchase.value = PurchaseHistoryModel().copyWith(
+            customerId: data.customerId, productIdList: data.productIdList);
+      }
+    } on FirebaseException catch (e) {
+      Get.snackbar("Error with code: ${e.code}", e.message.toString(),
           snackPosition: SnackPosition.TOP,
           colorText: Colors.white,
           backgroundColor: Colors.red);
     }
   }
 
-    Future<void> queryPlan({required String taskId}) async {
+  Future<void> queryPlan({required String taskId}) async {
     try {
       clearPlanList();
-      QuerySnapshot snapshot = await cloudService.queryPlan(taskId: taskId);
+      QuerySnapshot snapshot = await CustomerDBService(Get.find<UserController>().user.value.userId!)
+              .queryPlan(taskId: taskId);
       List<Plan> plans = snapshot.docs.map((DocumentSnapshot doc) {
         Map<String, dynamic> map = doc.data() as Map<String, dynamic>;
         return Plan.fromMap(map);
       }).toList();
-      planList.addAll(plans);
-    } catch (e) {
-      Get.snackbar("Error", e.toString(),
+      planList.assignAll(plans);
+    } on FirebaseException catch (e) {
+      Get.snackbar("Error with code: ${e.code}", e.message.toString(),
           snackPosition: SnackPosition.TOP,
           colorText: Colors.white,
           backgroundColor: Colors.red);

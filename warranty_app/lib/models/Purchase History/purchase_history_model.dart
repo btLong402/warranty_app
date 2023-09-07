@@ -33,7 +33,7 @@ class PurchaseHistoryModel {
       customerId:
           map['customerId'] != null ? map['customerId'] as String : null,
       productIdList: map['productIdList'] != null
-          ? List<String>.from((map['productIdList'] as List<String>))
+          ? List<String>.from((map['productIdList'] as List<dynamic>))
           : null,
     );
   }

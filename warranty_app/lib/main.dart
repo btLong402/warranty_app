@@ -1,9 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
-import 'package:warranty_app/helper/init.dart' as i;
-import 'package:warranty_app/views/auth/sign_in_screen.dart';
+import 'package:warranty_app/controllers/auth_controller.dart';
 import 'package:warranty_app/views/home_view.dart';
 import 'firebase_options.dart';
 
@@ -12,7 +10,7 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  await i.init();
+  Get.put(AuthController());
   runApp(const MainApp());
 }
 
@@ -21,12 +19,10 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
+    return const GetMaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: FirebaseAuth.instance.currentUser?.uid == null
-            ? SignIn()
-            : HomeView(),
+        body: HomeView(),
       ),
     );
   }

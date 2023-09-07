@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:warranty_app/models/User/user_model.dart';
 import 'package:warranty_app/services/db/auth_cloud_service.dart';
@@ -21,7 +20,7 @@ class UserController extends GetxController {
             role: userData.role,
             userId: userData.userId,
             userName: userData.userName);
-        debugPrint('user.value : ${user.value}');
+        // print(user.value.toString());
       }
     } catch (e) {
       // failure('Error fetching user data!', e.toString());
