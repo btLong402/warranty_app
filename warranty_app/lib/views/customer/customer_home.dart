@@ -8,6 +8,7 @@ import 'package:warranty_app/controllers/user_controller.dart';
 import 'package:warranty_app/models/Report/report_model.dart';
 import 'package:warranty_app/views/customer/create_report_screen.dart';
 import 'package:warranty_app/widgets/report_card.dart';
+import 'package:warranty_app/views/customer/report_detail.dart';
 
 class CustomerHome extends StatefulWidget {
   const CustomerHome({super.key});
@@ -22,7 +23,6 @@ class _CustomerHomeState extends State<CustomerHome> {
   final ProductController productController = Get.put(ProductController());
   @override
   void initState() {
-    // TODO: implement initState
     // customerController.clearReport();
 
     // productController.clearAll();
@@ -39,12 +39,7 @@ class _CustomerHomeState extends State<CustomerHome> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Customer'),
-        // actions: [
-        //   IconButton(
-        //     icon: const Icon(Icons.add),
-        //     onPressed: () {},
-        //   ),
-        // ],
+        centerTitle: true,
       ),
       drawer: Drawer(
           child: ListView(
@@ -102,7 +97,11 @@ class _CustomerHomeState extends State<CustomerHome> {
                   horizontalOffset: 400.0,
                   child: FadeInAnimation(
                     child: GestureDetector(
-                      onTap: () {},
+                      onTap: () => Get.to(
+                          () => ReportDetail(
+                                report: report,
+                              ),
+                          transition: Transition.downToUp),
                       child: ReportCard(report: report),
                     ),
                   ),
@@ -113,7 +112,8 @@ class _CustomerHomeState extends State<CustomerHome> {
         );
       }),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Get.to(() => const CreateReportScreen()),
+        onPressed: () => Get.to(() => const CreateReportScreen(),
+            transition: Transition.downToUp),
         backgroundColor: Colors.blue[600],
         child: const Icon(Icons.add),
       ),

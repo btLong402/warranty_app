@@ -8,9 +8,8 @@ class UserModel {
   final String? userName;
   final String? contact;
   final UserRole? role;
-  UserModel(
-  {
-    this.email, 
+  UserModel({
+    this.email,
     this.userId,
     this.userName,
     this.contact,
@@ -25,7 +24,7 @@ class UserModel {
     UserRole? role,
   }) {
     return UserModel(
-      email: email?? this.email,
+      email: email ?? this.email,
       userId: userId ?? this.userId,
       userName: userName ?? this.userName,
       contact: contact ?? this.contact,

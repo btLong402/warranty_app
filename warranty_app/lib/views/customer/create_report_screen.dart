@@ -24,6 +24,7 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Create A New Report'),
+          centerTitle: true,
         ),
         body: SafeArea(child: Obx(() {
           return Container(
@@ -66,7 +67,7 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
                       onChanged: (String? value) {
                         setState(() {
                           productId = value;
-                          debugPrint(' productId: $productId');
+                          // debugPrint(' productId: $productId');
                         });
                       },
                       buttonStyleData: ButtonStyleData(
@@ -100,7 +101,7 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    ButtonWidget(
+                    ButtonWidget1(
                         label: 'Sent',
                         onTap: () {
                           if (productId != null) {
