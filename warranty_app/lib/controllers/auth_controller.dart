@@ -5,13 +5,12 @@ import 'package:warranty_app/views/auth/sign_in_screen.dart';
 import 'package:warranty_app/views/home_view.dart';
 
 class AuthController extends GetxController {
-  late Rx<User?> user;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   void onReady() {
     super.onReady();
-    user = Rx<User?>(_auth.currentUser);
+    Rx<User?> user = Rx<User?>(_auth.currentUser);
     user.bindStream(_auth.userChanges());
     ever(user, _initialScreen);
   }
@@ -35,7 +34,7 @@ class AuthController extends GetxController {
     if (user == null) {
       Get.offAll(() => SignIn());
     } else {
-      Get.offAll(() => const HomeView());
+      Get.offAll(() => HomeView());
     }
   }
 }

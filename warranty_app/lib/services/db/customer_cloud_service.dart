@@ -17,18 +17,26 @@ class CustomerDBService extends BaseService with AdvancedService {
     });
   }
 
-  @override
-  Future queryReport({String? reportId, int? status}) async {
-    QuerySnapshot snapshot = await reportCollection
-        .where('customerId', isEqualTo: uid)
-        .orderBy('createAt', descending: true)
-        .get();
-    return snapshot;
-  }
 
   @override
   Future queryPurchaseHistory({String? customerId}) async {
     DocumentSnapshot snapshot = await purchaseCollection.doc(uid).get();
     return snapshot;
+  }
+  Stream<QuerySnapshot> queryReportStream() {
+    return reportCollection
+        .where('customerId', isEqualTo: uid)
+        .orderBy('createAt', descending: true)
+        .snapshots();
+  }
+
+  Stream<DocumentSnapshot> queryPurchaseHistoryStream() {
+    return purchaseCollection.doc(uid).snapshots();
+  }
+  
+  @override
+  Stream<QuerySnapshot<Object?>> queryReport({String? reportId, int? status}) {
+    // TODO: implement queryReport
+    throw UnimplementedError();
   }
 }

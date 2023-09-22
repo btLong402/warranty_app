@@ -4,29 +4,32 @@ import 'dart:convert';
 import 'package:warranty_app/utils/constant.dart';
 
 class Plan {
-  final int planId;
-  final int taskId;
-  String? itemErrorId;
-  Status status;
+  final String? planId;
+  final String? taskId;
+  final String? itemErrorId;
+  final String? description;
+  Status? status;
   Plan({
-    required this.planId,
-    required this.taskId,
+    this.planId,
+    this.taskId,
     this.itemErrorId,
-    required this.status,
+    this.status,
+    this.description,
   });
-  
 
   Plan copyWith({
-    int? planId,
-    int? taskId,
+    String? planId,
+    String? taskId,
     String? itemErrorId,
     Status? status,
+    String? description,
   }) {
     return Plan(
       planId: planId ?? this.planId,
       taskId: taskId ?? this.taskId,
       itemErrorId: itemErrorId ?? this.itemErrorId,
       status: status ?? this.status,
+      description: description ?? this.description,
     );
   }
 
@@ -35,22 +38,25 @@ class Plan {
       'planId': planId,
       'taskId': taskId,
       'itemErrorId': itemErrorId,
-      'status': status.index,
+      'status': status!.index,
+      'description': description,
     };
   }
 
   factory Plan.fromMap(Map<String, dynamic> map) {
     return Plan(
-      planId: map['planId'] as int,
-      taskId: map['taskId'] as int,
-      itemErrorId: map['itemErrorId'] != null ? map['itemErrorId'] as String : null,
+      planId: map['planId'] as String,
+      taskId: map['taskId'] as String,
+      itemErrorId: map['itemErrorId'] as String,
       status: Status.values[map['status']],
+      description: map['description'] as String,
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory Plan.fromJson(String source) => Plan.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory Plan.fromJson(String source) =>
+      Plan.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
@@ -60,19 +66,20 @@ class Plan {
   @override
   bool operator ==(covariant Plan other) {
     if (identical(this, other)) return true;
-  
-    return 
-      other.planId == planId &&
-      other.taskId == taskId &&
-      other.itemErrorId == itemErrorId &&
-      other.status == status;
+
+    return other.planId == planId &&
+        other.taskId == taskId &&
+        other.itemErrorId == itemErrorId &&
+        other.status == status &&
+        other.description == description;
   }
 
   @override
   int get hashCode {
     return planId.hashCode ^
-      taskId.hashCode ^
-      itemErrorId.hashCode ^
-      status.hashCode;
+        taskId.hashCode ^
+        itemErrorId.hashCode ^
+        status.hashCode ^
+        description.hashCode;
   }
 }

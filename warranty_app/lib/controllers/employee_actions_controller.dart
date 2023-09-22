@@ -46,28 +46,28 @@ class EmployeeActionsController extends BaseController {
     }
   }
 
-  Future<void> queryReport({required String reportId}) async {
-    try {
-      clearReport();
-      DocumentSnapshot snapshot =
-          await cloudService.queryReport(reportId: reportId);
-      if (snapshot.exists) {
-        Report rp = Report.fromMap(snapshot.data() as Map<String, dynamic>);
-        report.value = Report().copyWith(
-            reportId: rp.reportId,
-            productId: rp.productId,
-            customerId: rp.customerId,
-            createAt: rp.createAt,
-            description: rp.description,
-            status: rp.status);
-      }
-    } catch (e) {
-      Get.snackbar("Error", e.toString(),
-          snackPosition: SnackPosition.TOP,
-          colorText: Colors.white,
-          backgroundColor: Colors.red);
-    }
-  }
+  // Future<void> queryReport({required String reportId}) async {
+  //   try {
+  //     clearReport();
+  //     DocumentSnapshot snapshot =
+  //         await cloudService.queryReport(reportId: reportId);
+  //     if (snapshot.exists) {
+  //       Report rp = Report.fromMap(snapshot.data() as Map<String, dynamic>);
+  //       report.value = Report().copyWith(
+  //           reportId: rp.reportId,
+  //           productId: rp.productId,
+  //           customerId: rp.customerId,
+  //           createAt: rp.createAt,
+  //           description: rp.description,
+  //           status: rp.status);
+  //     }
+  //   } catch (e) {
+  //     Get.snackbar("Error", e.toString(),
+  //         snackPosition: SnackPosition.TOP,
+  //         colorText: Colors.white,
+  //         backgroundColor: Colors.red);
+  //   }
+  // }
 
     Future<void> queryReportSession({required String reportId}) async {
     try {

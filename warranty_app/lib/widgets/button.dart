@@ -3,19 +3,19 @@ import 'package:flutter/material.dart';
 
 class ButtonWidget1 extends StatelessWidget {
   const ButtonWidget1(
-      {Key? key, required this.label, required this.onTap, required this.color})
+      {Key? key, required this.label, required this.onTap, required this.color, this.width})
       : super(key: key);
 
   final String label;
   final Color color;
   final Function() onTap;
-
+  final double? width;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 90,
+        width: width ?? 90,
         height: 50,
         alignment: Alignment.center,
         decoration:
@@ -74,4 +74,5 @@ class ButtonWidget2 extends StatelessWidget {
       ),
     );
   }
+
 }

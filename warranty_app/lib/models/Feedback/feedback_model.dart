@@ -1,33 +1,92 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
+
 class Feedback {
-  final int _feedbackId;
-  final int _reportId;
-  final String _customerId;
-  final String _toUserId;
-  final String _feedback;
-  final DateTime _createAt;
-  get feedbackId => _feedbackId;
+  final String feedbackId;
+  final String reportId;
+  final String customerId;
+  final String toUserId;
+  final String feedback;
+  final DateTime createAt;
+  Feedback({
+    required this.feedbackId,
+    required this.reportId,
+    required this.customerId,
+    required this.toUserId,
+    required this.feedback,
+    required this.createAt,
+  });
+  
 
-  get reportId => _reportId;
+  Feedback copyWith({
+    String? feedbackId,
+    String? reportId,
+    String? customerId,
+    String? toUserId,
+    String? feedback,
+    DateTime? createAt,
+  }) {
+    return Feedback(
+      feedbackId: feedbackId ?? this.feedbackId,
+      reportId: reportId ?? this.reportId,
+      customerId: customerId ?? this.customerId,
+      toUserId: toUserId ?? this.toUserId,
+      feedback: feedback ?? this.feedback,
+      createAt: createAt ?? this.createAt,
+    );
+  }
 
-  get customerId => _customerId;
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'feedbackId': feedbackId,
+      'reportId': reportId,
+      'customerId': customerId,
+      'toUserId': toUserId,
+      'feedback': feedback,
+      'createAt': createAt.millisecondsSinceEpoch,
+    };
+  }
 
-  get toUserId => _toUserId;
+  factory Feedback.fromMap(Map<String, dynamic> map) {
+    return Feedback(
+      feedbackId: map['feedbackId'] as String,
+      reportId: map['reportId'] as String,
+      customerId: map['customerId'] as String,
+      toUserId: map['toUserId'] as String,
+      feedback: map['feedback'] as String,
+      createAt: DateTime.fromMillisecondsSinceEpoch(map['createAt'] as int),
+    );
+  }
 
-  get feedback => _feedback;
+  String toJson() => json.encode(toMap());
 
-  get createAt => _createAt;
+  factory Feedback.fromJson(String source) => Feedback.fromMap(json.decode(source) as Map<String, dynamic>);
 
-  const Feedback(
-      {required int feedbackId,
-      required int reportId,
-      required String customerId,
-      required String toUserId,
-      required String feedback,
-      required DateTime createAt})
-      : _feedbackId = feedbackId,
-        _reportId = reportId,
-        _customerId = customerId,
-        _toUserId = toUserId,
-        _feedback = feedback,
-        _createAt = createAt;
+  @override
+  String toString() {
+    return 'Feedback(feedbackId: $feedbackId, reportId: $reportId, customerId: $customerId, toUserId: $toUserId, feedback: $feedback, createAt: $createAt)';
+  }
+
+  @override
+  bool operator ==(covariant Feedback other) {
+    if (identical(this, other)) return true;
+  
+    return 
+      other.feedbackId == feedbackId &&
+      other.reportId == reportId &&
+      other.customerId == customerId &&
+      other.toUserId == toUserId &&
+      other.feedback == feedback &&
+      other.createAt == createAt;
+  }
+
+  @override
+  int get hashCode {
+    return feedbackId.hashCode ^
+      reportId.hashCode ^
+      customerId.hashCode ^
+      toUserId.hashCode ^
+      feedback.hashCode ^
+      createAt.hashCode;
+  }
 }

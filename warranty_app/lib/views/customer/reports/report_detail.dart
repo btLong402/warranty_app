@@ -6,6 +6,8 @@ import 'package:warranty_app/controllers/user_controller.dart';
 import 'package:warranty_app/models/Product/product_model.dart';
 import 'package:warranty_app/models/Report/report_model.dart';
 import 'package:warranty_app/utils/constant.dart';
+import 'package:warranty_app/views/customer/assignment/assignment_screen.dart';
+import 'package:warranty_app/views/customer/reports/report_session_list.dart';
 import 'package:warranty_app/widgets/button.dart';
 
 class ReportDetail extends StatefulWidget {
@@ -242,7 +244,8 @@ class _ReportDetailState extends State<ReportDetail> {
               ),
               ButtonWidget2(
                 label: 'Report Session',
-                onTap: () {},
+                onTap: () =>
+                    Get.to(() => ReportSessionList(report: widget.report)),
                 width: 320,
               ),
               const SizedBox(
@@ -250,7 +253,9 @@ class _ReportDetailState extends State<ReportDetail> {
               ),
               ButtonWidget2(
                 label: 'Assignment',
-                onTap: () {},
+                onTap: () => Get.to(() => AssignmentScreen(
+                      reportId: widget.report.reportId!,
+                    )),
                 width: 320,
               )
             ],

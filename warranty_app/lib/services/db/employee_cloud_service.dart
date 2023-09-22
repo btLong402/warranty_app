@@ -11,21 +11,20 @@ class EmployeeDBService extends BaseService {
     return snapshot;
   }
 
-  Future createPlan(
-      {required String taskId,
-      String? itemErrorId}) async {
+  Future createPlan({required String taskId, String? itemErrorId}) async {
     String planId = const Uuid().v4();
     return await planCollection.doc(planId).set({
       "planId": planId,
       "taskId": taskId,
       "itemErrorId": itemErrorId ?? '',
-      "status" : 0,
+      "status": 0,
     });
   }
 
   @override
-  Future queryReport({String? reportId, int? status}) async {
-    DocumentSnapshot snapshot = await reportCollection.doc(reportId).get();
-    return snapshot;
+  Stream<QuerySnapshot> queryReport({String? reportId, int? status}) {
+    return reportCollection.where('reportId', isEqualTo: reportId).snapshots();
   }
+
+  // Stream<QueryDocumentSnapshot> queryReportStream({String reportId})
 }

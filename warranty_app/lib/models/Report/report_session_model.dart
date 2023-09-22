@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:warranty_app/utils/constant.dart';
 
 class ReportSession {
-  final int reportSessionId;
-  final int reportId;
+  final String reportSessionId;
+  final String reportId;
   final String supportId;
   final DateTime createAt;
   final String description;
@@ -18,10 +18,9 @@ class ReportSession {
     required this.status,
   });
 
-
   ReportSession copyWith({
-    int? reportSessionId,
-    int? reportId,
+    String? reportSessionId,
+    String? reportId,
     String? supportId,
     DateTime? createAt,
     String? description,
@@ -50,18 +49,19 @@ class ReportSession {
 
   factory ReportSession.fromMap(Map<String, dynamic> map) {
     return ReportSession(
-      reportSessionId: map['reportSessionId'] as int,
-      reportId: map['reportId'] as int,
+      reportSessionId: map['reportSessionId'] as String,
+      reportId: map['reportId'] as String,
       supportId: map['supportId'] as String,
       createAt: DateTime.fromMillisecondsSinceEpoch(map['createAt'] as int),
       description: map['description'] as String,
-      status: Status.values[map['status']],
+      status: Status.values[map['status'] as int],
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory ReportSession.fromJson(String source) => ReportSession.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory ReportSession.fromJson(String source) =>
+      ReportSession.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
@@ -71,23 +71,22 @@ class ReportSession {
   @override
   bool operator ==(covariant ReportSession other) {
     if (identical(this, other)) return true;
-  
-    return 
-      other.reportSessionId == reportSessionId &&
-      other.reportId == reportId &&
-      other.supportId == supportId &&
-      other.createAt == createAt &&
-      other.description == description &&
-      other.status == status;
+
+    return other.reportSessionId == reportSessionId &&
+        other.reportId == reportId &&
+        other.supportId == supportId &&
+        other.createAt == createAt &&
+        other.description == description &&
+        other.status == status;
   }
 
   @override
   int get hashCode {
     return reportSessionId.hashCode ^
-      reportId.hashCode ^
-      supportId.hashCode ^
-      createAt.hashCode ^
-      description.hashCode ^
-      status.hashCode;
+        reportId.hashCode ^
+        supportId.hashCode ^
+        createAt.hashCode ^
+        description.hashCode ^
+        status.hashCode;
   }
 }

@@ -8,40 +8,44 @@ import 'package:warranty_app/views/employee/employee_home.dart';
 import 'package:warranty_app/views/supporter/supporter_home.dart';
 import 'package:warranty_app/widgets/loading.dart';
 
+// ignore: must_be_immutable
 class HomeView extends StatefulWidget {
-  const HomeView({super.key});
-
+  HomeView({super.key});
+  UserRole? userRole;
   @override
   State<HomeView> createState() => _HomeViewState();
 }
 
 class _HomeViewState extends State<HomeView> {
+  final UserController userController = Get.put(UserController());
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    userController.getUserData().whenComplete(() {
+      setState(() {
+        widget.userRole = userController.user.value.role;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final UserController userController = Get.put(UserController());
-
-    return Obx(() {
-      userController.getUserData();
-      final userRole = userController.user.value.role;
-
-      Widget homeWidget;
-
-      switch (userRole) {
-        case UserRole.employee:
-          homeWidget = const EmployeeHome();
-          break;
-        case UserRole.supporter:
-          homeWidget = const SupporterHome();
-          break;
-        case UserRole.customer:
-          homeWidget = const CustomerHome();
-          break;
-        default:
-          homeWidget = const LoadingWidget();
-          break;
-      }
-
-      return homeWidget;
-    });
+    Widget homeWidget;
+    switch (widget.userRole) {
+      case UserRole.employee:
+        homeWidget = const EmployeeHome();
+        break;
+      case UserRole.supporter:
+        homeWidget = const SupporterHome();
+        break;
+      case UserRole.customer:
+        homeWidget = const CustomerHome();
+        break;
+      default:
+        homeWidget = const LoadingWidget();
+        break;
+    }
+    return homeWidget;
   }
 }

@@ -8,6 +8,7 @@ import 'package:warranty_app/models/Purchase%20History/purchase_history_model.da
 import 'package:warranty_app/models/Report/report_model.dart';
 import 'package:warranty_app/models/Report/report_session_model.dart';
 import 'package:warranty_app/models/Task/task_model.dart';
+import 'package:warranty_app/models/User/user_model.dart';
 import 'package:warranty_app/services/db/supporter_cloud_service.dart';
 
 class SupporterActionsController extends BaseController {
@@ -32,14 +33,16 @@ class SupporterActionsController extends BaseController {
 
   Future<void> queryReport({int? status}) async {
     try {
-      clearReportList();
-      int status0 = status ?? 2;
-      QuerySnapshot snapshot = await cloudService.queryReport(status: status0);
-      List<Report> reports = snapshot.docs.map((DocumentSnapshot doc) {
-        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-        return Report.fromMap(data);
-      }).toList();
-      reportList.addAll(reports);
+      int status0 = status ?? 0;
+      reportStreamSubscription = cloudService
+          .queryReport(status: status0)
+          .listen((QuerySnapshot snapshot) {
+        List<Report> reports = snapshot.docs.map((DocumentSnapshot doc) {
+          Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+          return Report.fromMap(data);
+        }).toList();
+        reportList.assignAll(reports);
+      });
     } catch (e) {
       Get.snackbar("Error", e.toString(),
           snackPosition: SnackPosition.TOP,
@@ -48,7 +51,7 @@ class SupporterActionsController extends BaseController {
     }
   }
 
-  Future <void> queryReportSession({required String reportId}) async {
+  Future<void> queryReportSession({required String reportId}) async {
     try {
       clearReportSessionList();
       QuerySnapshot snapshot =
@@ -207,5 +210,68 @@ class SupporterActionsController extends BaseController {
           colorText: Colors.white,
           backgroundColor: Colors.red);
     }
+  }
+
+  Future<UserModel> getUserInfo({required String userId}) async {
+    UserModel user = UserModel();
+    try {
+      DocumentSnapshot snapshot = await cloudService.queryUser(uid: userId);
+      if (snapshot.exists) {
+        user = UserModel.fromMap(snapshot.data() as Map<String, dynamic>);
+      }
+    } on FirebaseException catch (e) {
+      Get.snackbar("Error with code: ${e.code}", e.message.toString(),
+          snackPosition: SnackPosition.TOP,
+          colorText: Colors.white,
+          backgroundColor: Colors.red);
+    }
+    return user;
+  }
+
+  Future addToProgress({required String reportId}) async {
+    try {
+      await cloudService.addToProgress(reportId: reportId);
+    } catch (e) {
+      Get.snackbar("Error", e.toString(),
+          snackPosition: SnackPosition.TOP,
+          colorText: Colors.white,
+          backgroundColor: Colors.red);
+    }
+  }
+
+  void queryRpSsOnStream({required String reportId}) {
+    reportSsStreamSubscription = cloudService
+        .queryReportSessionOnStream(reportId: reportId)
+        .listen((QuerySnapshot snapshot) {
+      List<ReportSession> sessions = snapshot.docs.map((DocumentSnapshot doc) {
+        Map<String, dynamic> map = doc.data() as Map<String, dynamic>;
+        return ReportSession.fromMap(map);
+      }).toList();
+      reportSessionList.assignAll(sessions);
+    });
+  }
+
+  void queryAssignmentOnStream({required String reportId}) {
+    assignStreamSubscription = cloudService
+        .queryAssignmentOnStream(reportId: reportId)
+        .listen((QuerySnapshot snapshot) {
+      List<Task> tasks = snapshot.docs.map((DocumentSnapshot doc) {
+        Map<String, dynamic> map = doc.data() as Map<String, dynamic>;
+        return Task.fromMap(map);
+      }).toList();
+      taskList.assignAll(tasks);
+    });
+  }
+
+  void queryPlanOnStream({required String taskId}) {
+    planStreamSubscription = cloudService
+        .queryPlanOnStream(taskId: taskId)
+        .listen((QuerySnapshot snapshot) {
+      List<Plan> plans = snapshot.docs.map((DocumentSnapshot doc) {
+        Map<String, dynamic> map = doc.data() as Map<String, dynamic>;
+        return Plan.fromMap(map);
+      }).toList();
+      planList.assignAll(plans);
+    });
   }
 }

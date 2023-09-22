@@ -4,8 +4,8 @@ import 'dart:convert';
 import 'package:warranty_app/utils/constant.dart';
 
 class Task {
-  final int taskId;
-  final int reportId;
+  final String taskId;
+  final String reportId;
   final String employeeId;
   final String creatorId;
   final DateTime createAt;
@@ -21,8 +21,8 @@ class Task {
   });
 
   Task copyWith({
-    int? taskId,
-    int? reportId,
+    String? taskId,
+    String? reportId,
     String? employeeId,
     String? creatorId,
     DateTime? createAt,
@@ -51,18 +51,19 @@ class Task {
 
   factory Task.fromMap(Map<String, dynamic> map) {
     return Task(
-      taskId: map['taskId'] as int,
-      reportId: map['reportId'] as int,
+      taskId: map['taskId'] as String,
+      reportId: map['reportId'] as String,
       employeeId: map['employeeId'] as String,
       creatorId: map['creatorId'] as String,
       createAt: DateTime.fromMillisecondsSinceEpoch(map['createAt'] as int),
-      status: Status.values[map['status']],
+      status: Status.values[map['status'] as int],
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory Task.fromJson(String source) => Task.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory Task.fromJson(String source) =>
+      Task.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
@@ -72,23 +73,22 @@ class Task {
   @override
   bool operator ==(covariant Task other) {
     if (identical(this, other)) return true;
-  
-    return 
-      other.taskId == taskId &&
-      other.reportId == reportId &&
-      other.employeeId == employeeId &&
-      other.creatorId == creatorId &&
-      other.createAt == createAt &&
-      other.status == status;
+
+    return other.taskId == taskId &&
+        other.reportId == reportId &&
+        other.employeeId == employeeId &&
+        other.creatorId == creatorId &&
+        other.createAt == createAt &&
+        other.status == status;
   }
 
   @override
   int get hashCode {
     return taskId.hashCode ^
-      reportId.hashCode ^
-      employeeId.hashCode ^
-      creatorId.hashCode ^
-      createAt.hashCode ^
-      status.hashCode;
+        reportId.hashCode ^
+        employeeId.hashCode ^
+        creatorId.hashCode ^
+        createAt.hashCode ^
+        status.hashCode;
   }
 }

@@ -31,10 +31,6 @@ class ReportCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // const CircleAvatar(
-                //   radius: 30.0,
-                //   backgroundImage: AssetImage("assets/images/report.png"),
-                // ),
                 Image.asset("assets/images/report.png"),
                 const SizedBox(
                   width: 5,
@@ -82,10 +78,6 @@ class ReportCard extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-          // const SizedBox(
-          //   height: 5.0,
-          // ),
-          // const Icon(Icons.report_problem_outlined)
         ]),
       ),
     );

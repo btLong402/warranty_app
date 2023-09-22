@@ -7,6 +7,15 @@ import 'package:warranty_app/services/db/auth_cloud_service.dart';
 class UserController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   Rx<UserModel> user = UserModel().obs;
+
+  @override
+  void onReady() {
+    super.onReady();
+    Rx<User?> u = Rx<User?>(_auth.currentUser);
+    u.bindStream(_auth.userChanges());
+    ever(u, _initialUser);
+  }
+
   Future<void> getUserData() async {
     try {
       DocumentSnapshot snapshot =
@@ -30,5 +39,13 @@ class UserController extends GetxController {
 
   Future<void> clearUserData() async {
     user.value = UserModel();
+  }
+
+  _initialUser(User? u) {
+    if (u == null) {
+      user.value = UserModel();
+    } else {
+      getUserData();
+    }
   }
 }
