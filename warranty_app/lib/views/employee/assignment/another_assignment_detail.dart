@@ -1,34 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:warranty_app/controllers/customer_actions_controller.dart';
+import 'package:warranty_app/controllers/employee_actions_controller.dart';
+import 'package:warranty_app/controllers/product_controller.dart';
+import 'package:warranty_app/models/Item/item_model.dart';
 import 'package:warranty_app/models/Task/task_model.dart';
 import 'package:warranty_app/models/User/user_model.dart';
 import 'package:warranty_app/utils/constant.dart';
-import 'package:warranty_app/views/customer/assignment/plan_list.dart';
-import 'package:warranty_app/widgets/button.dart';
 
-class AssignmentDetail extends StatefulWidget {
-  const AssignmentDetail({super.key, required this.task});
+class AnotherAssignmentDetail extends StatefulWidget {
+  const AnotherAssignmentDetail({super.key, required this.task});
   final Task task;
   @override
-  State<AssignmentDetail> createState() => _AssignmentDetailState();
+  State<AnotherAssignmentDetail> createState() =>
+      _AnotherAssignmentDetailState();
 }
 
-class _AssignmentDetailState extends State<AssignmentDetail> {
-  CustomerActionsController customerActionsController = Get.find();
+class _AnotherAssignmentDetailState extends State<AnotherAssignmentDetail> {
+  final EmployeeActionsController employeeActionsController = Get.find();
   UserModel creator = UserModel(), employee = UserModel();
-  @override
-  void initState() {
-    super.initState();
-    fetchUserInfo();
-  }
 
   Future<void> fetchUserInfo() async {
     try {
-      final fetchedCreator = await customerActionsController.getUserInfo(
+      final fetchedCreator = await employeeActionsController.getUserInfo(
           userId: widget.task.creatorId);
-      final fetchedEmployee = await customerActionsController.getUserInfo(
+      final fetchedEmployee = await employeeActionsController.getUserInfo(
           userId: widget.task.employeeId);
       setState(() {
         creator = UserModel().copyWith(
@@ -51,8 +47,15 @@ class _AssignmentDetailState extends State<AssignmentDetail> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    fetchUserInfo();
+    employeeActionsController.queryPlanOnStream(taskId: widget.task.taskId);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    debugPrint(widget.task.toString());
+    // debugPrint(widget.task.toString());
     return Scaffold(
       appBar: AppBar(
         title: const Text('Task Detail'),
@@ -150,13 +153,121 @@ class _AssignmentDetailState extends State<AssignmentDetail> {
           const SizedBox(
             height: 20,
           ),
-          ButtonWidget2(
-            label: 'Plan',
-            onTap: () => Get.to(() => PlanList(taskId: widget.task.taskId)),
-            width: 320,
-          ),
+          _plan()
         ]),
       )),
     );
+  }
+
+  Widget _plan() {
+    if (employeeActionsController.planList.isEmpty) {
+      return Container();
+    } else {
+      Item itemErr = Get.find<ProductController>()
+          .itemList[employeeActionsController.planList[0].itemErrorId];
+      return Column(children: [
+        Container(
+          margin: const EdgeInsets.only(left: 45, top: 10),
+          child: const Row(
+            children: [
+              Text(
+                'Plan:',
+                style: TextStyle(fontSize: 16),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 10),
+        Container(
+            width: 320,
+            decoration: ShapeDecoration(
+              color: Colors.white,
+              shape: RoundedRectangleBorder(
+                side: const BorderSide(width: 1, color: Color(0xFF0099CD)),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              shadows: const [
+                BoxShadow(
+                  color: Color(0x3F000000),
+                  blurRadius: 4,
+                  offset: Offset(0, 4),
+                  spreadRadius: 0,
+                )
+              ],
+            ),
+            child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(left: 25, top: 10),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Text('Item Error: ${itemErr.name}',
+                                  style: const TextStyle(fontSize: 16)),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          const Row(
+                            children: [
+                              Text(
+                                'Description of Plan:',
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      width: 260,
+                      decoration: ShapeDecoration(
+                        color: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          side: const BorderSide(
+                              width: 1, color: Color(0xFF0099CD)),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        shadows: const [
+                          BoxShadow(
+                            color: Color(0x3F000000),
+                            blurRadius: 4,
+                            offset: Offset(0, 4),
+                            spreadRadius: 0,
+                          )
+                        ],
+                      ),
+                      child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                              employeeActionsController.planList[0].description
+                                  .toString(),
+                              style: const TextStyle(fontSize: 16))),
+                    ),
+                    const SizedBox(height: 10),
+                    Container(
+                      margin: const EdgeInsets.only(left: 25, top: 10),
+                      child: Row(
+                        children: [
+                          Text(
+                              "Status: ${employeeActionsController.planList[0].status.toString().split('.').last}",
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                  color: Color(ColorStatus
+                                      .values[employeeActionsController
+                                          .planList[0].status!.index]
+                                      .hexCode),
+                                  fontSize: 16)),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                  ],
+                )))
+      ]);
+    }
   }
 }

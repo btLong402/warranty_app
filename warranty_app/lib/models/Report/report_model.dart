@@ -10,6 +10,7 @@ class Report {
   Status? status;
   final DateTime? createAt;
   final String? description;
+  final String? supportNow;
   Report({
     this.reportId,
     this.customerId,
@@ -17,6 +18,7 @@ class Report {
     this.status,
     this.createAt,
     this.description,
+    this.supportNow,
   });
 
   Report copyWith({
@@ -26,6 +28,7 @@ class Report {
     Status? status,
     DateTime? createAt,
     String? description,
+    String? supportNow,
   }) {
     return Report(
       reportId: reportId ?? this.reportId,
@@ -34,6 +37,7 @@ class Report {
       status: status ?? this.status,
       createAt: createAt ?? this.createAt,
       description: description ?? this.description,
+      supportNow: supportNow ?? this.supportNow,
     );
   }
 
@@ -44,6 +48,7 @@ class Report {
       'productId': productId,
       'status': status!.index,
       'createAt': createAt!.millisecondsSinceEpoch,
+      'supportNow': supportNow,
       'description': description,
     };
   }
@@ -56,6 +61,7 @@ class Report {
       status: Status.values[map['status']],
       createAt: DateTime.fromMillisecondsSinceEpoch(map['createAt'] as int),
       description: map['description'] as String,
+      supportNow: map['supportNow'] as String,
     );
   }
 
@@ -78,7 +84,8 @@ class Report {
         other.productId == productId &&
         other.status == status &&
         other.createAt == createAt &&
-        other.description == description;
+        other.description == description &&
+        other.supportNow == supportNow;
   }
 
   @override
@@ -88,6 +95,7 @@ class Report {
         productId.hashCode ^
         status.hashCode ^
         createAt.hashCode ^
-        description.hashCode;
+        description.hashCode ^
+        supportNow.hashCode;
   }
 }

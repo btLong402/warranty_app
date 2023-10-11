@@ -14,7 +14,7 @@ import 'package:warranty_app/services/db/supporter_cloud_service.dart';
 class SupporterActionsController extends BaseController {
   final SupporterDBService cloudService =
       SupporterDBService(FirebaseAuth.instance.currentUser!.uid);
-
+  final RxList listEmployee = <UserModel>[].obs;
   Future<void> createSession(
       {required String reportId, required String description}) async {
     try {
@@ -31,11 +31,11 @@ class SupporterActionsController extends BaseController {
     }
   }
 
-  Future<void> queryReport({int? status}) async {
+  void queryReport({int? status}) {
     try {
       int status0 = status ?? 0;
       reportStreamSubscription = cloudService
-          .queryReport(status: status0)
+          .queryReportOnStream(status: status0)
           .listen((QuerySnapshot snapshot) {
         List<Report> reports = snapshot.docs.map((DocumentSnapshot doc) {
           Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
@@ -85,22 +85,22 @@ class SupporterActionsController extends BaseController {
     }
   }
 
-  Future<void> queryTask({required String reportId}) async {
-    try {
-      clearTaskList();
-      QuerySnapshot snapshot = await cloudService.queryTask(reportId: reportId);
-      List<Task> tasks = snapshot.docs.map((DocumentSnapshot doc) {
-        Map<String, dynamic> map = doc.data() as Map<String, dynamic>;
-        return Task.fromMap(map);
-      }).toList();
-      taskList.addAll(tasks);
-    } catch (e) {
-      Get.snackbar("Error", e.toString(),
-          snackPosition: SnackPosition.TOP,
-          colorText: Colors.white,
-          backgroundColor: Colors.red);
-    }
-  }
+  // Future<void> queryTask({required String reportId}) async {
+  //   try {
+  //     clearTaskList();
+  //     QuerySnapshot snapshot = await cloudService.queryTask(reportId: reportId);
+  //     List<Task> tasks = snapshot.docs.map((DocumentSnapshot doc) {
+  //       Map<String, dynamic> map = doc.data() as Map<String, dynamic>;
+  //       return Task.fromMap(map);
+  //     }).toList();
+  //     taskList.addAll(tasks);
+  //   } catch (e) {
+  //     Get.snackbar("Error", e.toString(),
+  //         snackPosition: SnackPosition.TOP,
+  //         colorText: Colors.white,
+  //         backgroundColor: Colors.red);
+  //   }
+  // }
 
   Future<void> queryPlan({required String taskId}) async {
     try {
@@ -239,6 +239,28 @@ class SupporterActionsController extends BaseController {
     }
   }
 
+  Future deleteFromProgress({required String reportId}) async {
+    try {
+      await cloudService.deleteFromProgress(reportId: reportId);
+    } catch (e) {
+      Get.snackbar("Error", e.toString(),
+          snackPosition: SnackPosition.TOP,
+          colorText: Colors.white,
+          backgroundColor: Colors.red);
+    }
+  }
+
+  void queryReportProgress() {
+    reportProgressSubscription =
+        cloudService.queryReportProcess().listen((QuerySnapshot snapshot) {
+      List<Report> reports = snapshot.docs.map((DocumentSnapshot doc) {
+        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        return Report.fromMap(data);
+      }).toList();
+      reportList.assignAll(reports);
+    });
+  }
+
   void queryRpSsOnStream({required String reportId}) {
     reportSsStreamSubscription = cloudService
         .queryReportSessionOnStream(reportId: reportId)
@@ -273,5 +295,14 @@ class SupporterActionsController extends BaseController {
       }).toList();
       planList.assignAll(plans);
     });
+  }
+
+  Future queryEmployee() async {
+    QuerySnapshot snapshot = await cloudService.queryEmployee();
+    List<UserModel> employees = snapshot.docs.map((DocumentSnapshot doc) {
+      Map<String, dynamic> map = doc.data() as Map<String, dynamic>;
+      return UserModel.fromMap(map);
+    }).toList();
+    listEmployee.assignAll(employees);
   }
 }

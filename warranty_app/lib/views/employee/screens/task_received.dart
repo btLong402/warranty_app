@@ -1,31 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
-import 'package:warranty_app/controllers/supporter_actions_controller.dart';
-import 'package:warranty_app/models/Report/report_model.dart';
-import 'package:warranty_app/views/supporter/report/report_detail.dart';
+import 'package:warranty_app/controllers/employee_actions_controller.dart';
+import 'package:warranty_app/models/Task/task_model.dart';
+import 'package:warranty_app/views/employee/assignment/assignment_card.dart';
+import 'package:warranty_app/views/employee/assignment/assignment_detail.dart';
 
-import 'package:warranty_app/widgets/report_card.dart';
-
-class ReportPending extends StatefulWidget {
-  const ReportPending({super.key});
+class TaskReceived extends StatefulWidget {
+  const TaskReceived({super.key});
 
   @override
-  State<ReportPending> createState() => _ReportPendingState();
+  State<TaskReceived> createState() => _TaskReceivedState();
 }
 
-class _ReportPendingState extends State<ReportPending> {
-  final SupporterActionsController supporterActionsController = Get.find();
+class _TaskReceivedState extends State<TaskReceived> {
+  final EmployeeActionsController employeeActionsController = Get.find();
   @override
   void initState() {
+    // 
     super.initState();
-    supporterActionsController.queryReport();
+    employeeActionsController.queryAssignmentReceivedOnStream();
   }
 
   @override
   void dispose() {
-    supporterActionsController.closeReportStream();
     super.dispose();
+    employeeActionsController.closeAssignReceived();
   }
 
   @override
@@ -37,9 +37,9 @@ class _ReportPendingState extends State<ReportPending> {
               MediaQuery.of(context).orientation == Orientation.portrait
                   ? Axis.vertical
                   : Axis.horizontal,
-          itemCount: supporterActionsController.reportList.length,
+          itemCount: employeeActionsController.taskList.length,
           itemBuilder: (BuildContext context, int index) {
-            Report report = supporterActionsController.reportList[index];
+            Task task = employeeActionsController.taskList[index];
             return AnimationConfiguration.staggeredList(
               position: index,
               duration: Duration(milliseconds: 500 + index * 20),
@@ -47,12 +47,9 @@ class _ReportPendingState extends State<ReportPending> {
                 horizontalOffset: 400.0,
                 child: FadeInAnimation(
                   child: GestureDetector(
-                    onTap: () => Get.to(
-                        () => ReportDetail(
-                              report: report,
-                            ),
+                    onTap: () => Get.to(() => AssignmentDetail(task: task),
                         transition: Transition.downToUp),
-                    child: ReportCard(report: report),
+                    child: AssignmentCard(task: task),
                   ),
                 ),
               ),

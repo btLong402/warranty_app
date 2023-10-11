@@ -46,8 +46,11 @@ class _CreateReportSsState extends State<CreateReportSs> {
                 ButtonWidget1(
                     label: 'Create',
                     onTap: () {
-                      if(descriptionController.text.isNotEmpty) {
-                        
+                      if (descriptionController.text.isNotEmpty) {
+                        supporterActionsController.createSession(
+                            reportId: widget.reportId,
+                            description: descriptionController.text);
+                        Get.back();
                       }
                     },
                     color: const Color(0xFF121212))

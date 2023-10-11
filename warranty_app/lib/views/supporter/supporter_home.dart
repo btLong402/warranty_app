@@ -22,24 +22,18 @@ class _SupporterHomeState extends State<SupporterHome> {
       Get.put(SupporterActionsController());
   int index = 0;
   final screens = [
-    ReportPending(),
+    const ReportPending(),
     const ReportProgress(),
   ];
   @override
   void initState() {
-    // TODO: implement initState
     productController.getProduct();
     productController.getItem();
-    supporterActionsController.queryReport();
+    
     super.initState();
   }
 
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    supporterActionsController.closeReportStream();
-    super.dispose();
-  }
+
 
   @override
   Widget build(BuildContext context) {

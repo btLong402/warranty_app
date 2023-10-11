@@ -16,7 +16,7 @@ abstract class BaseService {
   final CollectionReference purchaseHistoryCollection =
       FirebaseFirestore.instance.collection("purchase history table");
 
-  Stream<QuerySnapshot> queryReport({String? reportId, int? status});
+  Stream<QuerySnapshot> queryReportOnStream({String? reportId, int? status});
   Future queryTask({String? reportId}) async {
     QuerySnapshot snapshot =
         await taskCollection.where('reportId', isEqualTo: reportId).get();
@@ -37,7 +37,10 @@ abstract class BaseService {
   }
 
   Stream<QuerySnapshot> queryAssignmentOnStream({String? reportId}) {
-    return taskCollection.where('reportId', isEqualTo: reportId).snapshots();
+    return taskCollection
+        .where('reportId', isEqualTo: reportId)
+        .orderBy('createAt', descending: true)
+        .snapshots();
   }
 
   Stream<QuerySnapshot> queryPlanOnStream({required String taskId}) {

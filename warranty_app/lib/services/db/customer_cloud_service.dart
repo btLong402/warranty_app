@@ -13,16 +13,17 @@ class CustomerDBService extends BaseService with AdvancedService {
       "productId": productId,
       "createAt": DateTime.now().millisecondsSinceEpoch,
       "status": 0,
+      "supportNow": '',
       "description": description
     });
   }
-
 
   @override
   Future queryPurchaseHistory({String? customerId}) async {
     DocumentSnapshot snapshot = await purchaseCollection.doc(uid).get();
     return snapshot;
   }
+
   Stream<QuerySnapshot> queryReportStream() {
     return reportCollection
         .where('customerId', isEqualTo: uid)
@@ -33,10 +34,12 @@ class CustomerDBService extends BaseService with AdvancedService {
   Stream<DocumentSnapshot> queryPurchaseHistoryStream() {
     return purchaseCollection.doc(uid).snapshots();
   }
-  
+
   @override
-  Stream<QuerySnapshot<Object?>> queryReport({String? reportId, int? status}) {
-    // TODO: implement queryReport
-    throw UnimplementedError();
+  Stream<QuerySnapshot<Object?>> queryReportOnStream({String? reportId, int? status}) {
+    return reportCollection
+        .where('customerId', isEqualTo: uid)
+        .orderBy('createAt', descending: true)
+        .snapshots();
   }
 }

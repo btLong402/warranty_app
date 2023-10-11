@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
-import 'package:warranty_app/controllers/customer_actions_controller.dart';
+import 'package:warranty_app/controllers/employee_actions_controller.dart';
 import 'package:warranty_app/models/Report/report_model.dart';
 import 'package:warranty_app/models/Report/report_session_model.dart';
-import 'package:warranty_app/views/customer/reports/report_session_detail.dart';
-import 'package:warranty_app/views/customer/widgets/report_session_card.dart';
+import 'package:warranty_app/views/employee/report/report_session_detail.dart';
+
+import 'package:warranty_app/views/employee/widgets/report_session_card.dart';
 
 class ReportSessionList extends StatefulWidget {
   const ReportSessionList({super.key, required this.report});
@@ -15,17 +16,17 @@ class ReportSessionList extends StatefulWidget {
 }
 
 class _ReportSessionListState extends State<ReportSessionList> {
-  final CustomerActionsController customerController = Get.find();
+  final EmployeeActionsController employeeActionsController = Get.find();
   @override
   void initState() {
-    // 
-    customerController.queryRpSsOnStream(reportId: widget.report.reportId!);
+    employeeActionsController.queryRpSsOnStream(
+        reportId: widget.report.reportId!);
     super.initState();
   }
 
   @override
   void dispose() {
-    customerController.closeRpSsStream();
+    employeeActionsController.closeRpSsStream();
     super.dispose();
   }
 
@@ -43,10 +44,10 @@ class _ReportSessionListState extends State<ReportSessionList> {
                   MediaQuery.of(context).orientation == Orientation.portrait
                       ? Axis.vertical
                       : Axis.horizontal,
-              itemCount: customerController.reportSessionList.length,
+              itemCount: employeeActionsController.reportSessionList.length,
               itemBuilder: (BuildContext context, int index) {
                 ReportSession rpSS =
-                    customerController.reportSessionList[index];
+                    employeeActionsController.reportSessionList[index];
                 // debugPrint(rpSS.toString());
 
                 return AnimationConfiguration.staggeredList(

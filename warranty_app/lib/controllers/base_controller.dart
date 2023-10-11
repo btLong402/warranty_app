@@ -17,16 +17,18 @@ abstract class BaseController extends GetxController {
   final Rx<Plan> plan = Plan().obs;
   Rx<PurchaseHistoryModel> purchase = PurchaseHistoryModel().obs;
   final RxList feedback = <Feedback>[].obs;
-  final Rx<Report> report = Report().obs;
   StreamSubscription<QuerySnapshot>? reportStreamSubscription;
   StreamSubscription<QuerySnapshot>? reportSsStreamSubscription;
   StreamSubscription<QuerySnapshot>? assignStreamSubscription;
   StreamSubscription<QuerySnapshot>? planStreamSubscription;
-  
+  StreamSubscription<QuerySnapshot>? reportProgressSubscription;
+  StreamSubscription<QuerySnapshot>? assignReceivedStream;
   void clearReportList() {
     reportList.clear();
   }
-
+  void closeAssignReceived() {
+    assignReceivedStream?.cancel();
+  }
   void clearReportSessionList() {
     reportSessionList.clear();
   }
@@ -43,14 +45,10 @@ abstract class BaseController extends GetxController {
     purchase.value = PurchaseHistoryModel();
   }
 
-  void clearReport() {
-    report.value = Report();
-  }
 
   void clearAll() {
     clearPlanList();
     clearPurchase();
-    clearReport();
     clearReportList();
     clearReportSessionList();
     clearTaskList();
@@ -70,5 +68,9 @@ abstract class BaseController extends GetxController {
 
   void closeReportStream() {
     reportStreamSubscription?.cancel();
+  }
+
+  void closeReportProgressStream() {
+    reportProgressSubscription?.cancel();
   }
 }

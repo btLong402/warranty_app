@@ -7,9 +7,10 @@ import 'package:warranty_app/models/Product/product_model.dart';
 import 'package:warranty_app/models/Report/report_model.dart';
 import 'package:warranty_app/models/User/user_model.dart';
 import 'package:warranty_app/utils/constant.dart';
-import 'package:warranty_app/views/customer/assignment/assignment_screen.dart';
+import 'package:warranty_app/views/supporter/assignment/assignment_screen.dart';
 import 'package:warranty_app/views/supporter/report/report_session_list.dart';
 import 'package:warranty_app/views/supporter/widgets/create_report_ss.dart';
+import 'package:warranty_app/views/supporter/widgets/create_task.dart';
 import 'package:warranty_app/widgets/button.dart';
 
 class ReportDetail extends StatefulWidget {
@@ -42,7 +43,6 @@ class _ReportDetailState extends State<ReportDetail> {
 
   @override
   void initState() {
-    // TODO: implement initState
     fetchUserInfo();
     super.initState();
   }
@@ -336,7 +336,10 @@ class _ReportDetailState extends State<ReportDetail> {
                   transition: Transition.downToUp),
               child: const Text('Create new Report Session')),
           ElevatedButton(
-              onPressed: () {}, child: const Text('Create new Task')),
+              onPressed: () => Get.to(() => CreateTask(
+                    report: widget.report,
+                  )),
+              child: const Text('Create new Task')),
         ],
       ),
     );
@@ -361,8 +364,8 @@ class _ReportDetailState extends State<ReportDetail> {
         children: [
           ElevatedButton(
               onPressed: () async {
-                await supporterActionsController.updateReportStatus(
-                    reportId: widget.report.reportId!, status: 0);
+                await supporterActionsController.deleteFromProgress(
+                    reportId: widget.report.reportId!);
                 Get.back();
               },
               child: const Text('Pending')),

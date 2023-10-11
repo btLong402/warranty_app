@@ -20,7 +20,6 @@ class _HomeViewState extends State<HomeView> {
   final UserController userController = Get.put(UserController());
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     userController.getUserData().whenComplete(() {
       setState(() {

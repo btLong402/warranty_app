@@ -47,7 +47,7 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
                       width: 10,
                     ),
                     DropdownButtonHideUnderline(
-                        child: DropdownButton2<String>(
+                        child: DropdownButton2(
                       hint: const Text('Select Item',
                           style: TextStyle(fontSize: 14, color: Colors.grey)),
                       items: customerActionsController

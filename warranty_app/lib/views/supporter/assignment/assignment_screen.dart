@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
-import 'package:warranty_app/controllers/customer_actions_controller.dart';
+import 'package:warranty_app/controllers/supporter_actions_controller.dart';
 import 'package:warranty_app/models/Task/task_model.dart';
-import 'package:warranty_app/views/customer/assignment/assignment_detail.dart';
-import 'package:warranty_app/views/customer/widgets/task_card.dart';
+import 'package:warranty_app/views/supporter/assignment/assignment_detail.dart';
+import 'package:warranty_app/views/supporter/widgets/task_card.dart';
 
 class AssignmentScreen extends StatefulWidget {
   const AssignmentScreen({super.key, required this.reportId});
@@ -14,18 +14,17 @@ class AssignmentScreen extends StatefulWidget {
 }
 
 class _AssignmentScreenState extends State<AssignmentScreen> {
-  final CustomerActionsController customerActionsController = Get.find();
+  final SupporterActionsController supporterActionsController = Get.find();
   @override
   void initState() {
-    debugPrint('widget.reportId: ${widget.reportId}');
-    customerActionsController.queryAssignmentOnStream(
+    supporterActionsController.queryAssignmentOnStream(
         reportId: widget.reportId);
     super.initState();
   }
 
   @override
   void dispose() {
-    customerActionsController.closeAssStream();
+    supporterActionsController.closeAssStream();
     super.dispose();
   }
 
@@ -43,9 +42,9 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
                 MediaQuery.of(context).orientation == Orientation.portrait
                     ? Axis.vertical
                     : Axis.horizontal,
-            itemCount: customerActionsController.taskList.length,
+            itemCount: supporterActionsController.taskList.length,
             itemBuilder: (BuildContext context, int index) {
-              Task task = customerActionsController.taskList[index];
+              Task task = supporterActionsController.taskList[index];
               return AnimationConfiguration.staggeredList(
                 position: index,
                 duration: Duration(milliseconds: 500 + index * 20),

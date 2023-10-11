@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:warranty_app/controllers/supporter_actions_controller.dart';
+import 'package:warranty_app/controllers/employee_actions_controller.dart';
 import 'package:warranty_app/models/Report/report_session_model.dart';
 import 'package:warranty_app/models/User/user_model.dart';
 import 'package:warranty_app/utils/constant.dart';
@@ -14,7 +14,7 @@ class ReportSessionCard extends StatefulWidget {
 }
 
 class _ReportSessionCardState extends State<ReportSessionCard> {
-  final SupporterActionsController supporterActionsController = Get.find();
+  final EmployeeActionsController employeeActionsController = Get.find();
   UserModel user = UserModel();
   @override
   void initState() {
@@ -24,7 +24,7 @@ class _ReportSessionCardState extends State<ReportSessionCard> {
 
   Future<void> fetchUserInfo() async {
     try {
-      final fetchedUser = await supporterActionsController.getUserInfo(
+      final fetchedUser = await employeeActionsController.getUserInfo(
           userId: widget.reportSession.supportId);
       setState(() {
         user = UserModel().copyWith(

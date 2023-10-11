@@ -1,33 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:warranty_app/controllers/customer_actions_controller.dart';
+import 'package:warranty_app/controllers/employee_actions_controller.dart';
 import 'package:warranty_app/models/Task/task_model.dart';
 import 'package:warranty_app/models/User/user_model.dart';
 import 'package:warranty_app/utils/constant.dart';
 
-class TaskCard extends StatefulWidget {
-  const TaskCard({super.key, required this.task});
+class AssignmentCard extends StatefulWidget {
+
+  const AssignmentCard({ super.key, required this.task });
   final Task task;
   @override
-  State<TaskCard> createState() => _TaskCardState();
+  State<AssignmentCard> createState() => _AssignmentCardState();
 }
 
-class _TaskCardState extends State<TaskCard> {
-  CustomerActionsController customerActionsController = Get.find();
+class _AssignmentCardState extends State<AssignmentCard> {
+  EmployeeActionsController employeeActionsController = Get.find();
   UserModel creator = UserModel(), employee = UserModel();
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    fetchUserInfo();
-  }
-
   Future<void> fetchUserInfo() async {
     try {
-      final fetchedCreator = await customerActionsController.getUserInfo(
+      final fetchedCreator = await employeeActionsController.getUserInfo(
           userId: widget.task.creatorId);
-      final fetchedEmployee = await customerActionsController.getUserInfo(
+      final fetchedEmployee = await employeeActionsController.getUserInfo(
           userId: widget.task.employeeId);
       setState(() {
         creator = UserModel().copyWith(
@@ -48,8 +42,12 @@ class _TaskCardState extends State<TaskCard> {
       debugPrint("Error fetching user information: $e");
     }
   }
-
   @override
+  void initState() {
+    super.initState();
+    fetchUserInfo();
+  }
+   @override
   Widget build(BuildContext context) {
     DateTime now = DateTime.now();
     bool isSameDay = false;

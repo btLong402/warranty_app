@@ -19,7 +19,6 @@ class _ReportSessionListState extends State<ReportSessionList> {
   final SupporterActionsController supporterActionsController = Get.find();
   @override
   void initState() {
-    // TODO: implement initState
     supporterActionsController.queryRpSsOnStream(
         reportId: widget.report.reportId!);
     super.initState();
@@ -27,7 +26,6 @@ class _ReportSessionListState extends State<ReportSessionList> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     supporterActionsController.closeRpSsStream();
     super.dispose();
   }

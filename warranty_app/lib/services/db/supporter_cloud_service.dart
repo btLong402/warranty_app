@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
 import 'package:warranty_app/services/db/advanced_service.dart';
@@ -5,8 +7,9 @@ import 'package:warranty_app/services/db/base_service.dart';
 
 class SupporterDBService extends BaseService with AdvancedService {
   SupporterDBService(super.uid);
-  final CollectionReference supportProgressRef =
-      FirebaseFirestore.instance.collection('Progress');
+
+  final CollectionReference userCollection =
+      FirebaseFirestore.instance.collection("users");
   Future createSession(String reportId, String description) async {
     String reportSSId = const Uuid().v4();
     return await reportSessionCollection.doc(reportSSId).set({
@@ -20,9 +23,16 @@ class SupporterDBService extends BaseService with AdvancedService {
   }
 
   @override
-  Stream<QuerySnapshot> queryReport({String? reportId, int? status}) {
+  Stream<QuerySnapshot> queryReportOnStream({String? reportId, int? status}) {
     return reportCollection
         .where('status', isEqualTo: status)
+        .orderBy('createAt', descending: true)
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot> queryReportProcess() {
+    return reportCollection
+        .where('supportNow', isEqualTo: uid)
         .orderBy('createAt', descending: true)
         .snapshots();
   }
@@ -46,7 +56,7 @@ class SupporterDBService extends BaseService with AdvancedService {
   }
 
   Future updatePlanStatus({required String planId, required int status}) async {
-    await planCollection.doc(planId).set({
+    await planCollection.doc(planId).update({
       "status": status,
     });
   }
@@ -71,9 +81,37 @@ class SupporterDBService extends BaseService with AdvancedService {
     });
   }
 
+  // Future addToProgress({required String reportId}) async {
+  //   await supportProgressRef.doc(uid).set({
+  //     'listReport': FieldValue.arrayUnion([reportId]),
+  //   }, SetOptions(merge: true));
+  // }
+
+  // Future deleteFromProgress({required String reportId}) async {
+  //   await supportProgressRef.doc(uid).update({
+  //     'listReport': FieldValue.arrayRemove([reportId]),
+  //   });
+  // }
+
+  // Stream<DocumentSnapshot> getListReportProgress() {
+  //   return supportProgressRef.doc(uid).snapshots();
+  // }
+
   Future addToProgress({required String reportId}) async {
-    await supportProgressRef.doc(uid).set({
-      'listReport': FieldValue.arrayUnion([reportId]),
-    }, SetOptions(merge: true));
+    await reportCollection.doc(reportId).update({
+      'supportNow': uid,
+      'status': 1,
+    });
+  }
+
+  Future deleteFromProgress({required String reportId}) async {
+    await reportCollection.doc(reportId).update({
+      'supportNow': '',
+      'status': 0,
+    });
+  }
+
+  Future queryEmployee() async {
+    return await userCollection.where('role', isEqualTo: 2).get();
   }
 }

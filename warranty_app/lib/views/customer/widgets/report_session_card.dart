@@ -18,7 +18,6 @@ class _ReportSessionCardState extends State<ReportSessionCard> {
   UserModel user = UserModel();
   @override
   void initState() {
-    // TODO: implement initState
     fetchUserInfo();
     super.initState();
   }

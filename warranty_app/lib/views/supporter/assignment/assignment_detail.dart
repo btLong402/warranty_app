@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:warranty_app/controllers/customer_actions_controller.dart';
+import 'package:warranty_app/controllers/supporter_actions_controller.dart';
 import 'package:warranty_app/models/Task/task_model.dart';
 import 'package:warranty_app/models/User/user_model.dart';
 import 'package:warranty_app/utils/constant.dart';
-import 'package:warranty_app/views/customer/assignment/plan_list.dart';
+import 'package:warranty_app/views/supporter/assignment/plan_list.dart';
 import 'package:warranty_app/widgets/button.dart';
 
 class AssignmentDetail extends StatefulWidget {
@@ -16,19 +16,20 @@ class AssignmentDetail extends StatefulWidget {
 }
 
 class _AssignmentDetailState extends State<AssignmentDetail> {
-  CustomerActionsController customerActionsController = Get.find();
+  SupporterActionsController supporterActionsController = Get.find();
   UserModel creator = UserModel(), employee = UserModel();
   @override
   void initState() {
     super.initState();
     fetchUserInfo();
+    // Su.queryPlanOnStream(taskId: widget.task.taskId);
   }
 
   Future<void> fetchUserInfo() async {
     try {
-      final fetchedCreator = await customerActionsController.getUserInfo(
+      final fetchedCreator = await supporterActionsController.getUserInfo(
           userId: widget.task.creatorId);
-      final fetchedEmployee = await customerActionsController.getUserInfo(
+      final fetchedEmployee = await supporterActionsController.getUserInfo(
           userId: widget.task.employeeId);
       setState(() {
         creator = UserModel().copyWith(
@@ -52,7 +53,7 @@ class _AssignmentDetailState extends State<AssignmentDetail> {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint(widget.task.toString());
+    // debugPrint(widget.task.toString());
     return Scaffold(
       appBar: AppBar(
         title: const Text('Task Detail'),
@@ -150,6 +151,7 @@ class _AssignmentDetailState extends State<AssignmentDetail> {
           const SizedBox(
             height: 20,
           ),
+          // _plan()
           ButtonWidget2(
             label: 'Plan',
             onTap: () => Get.to(() => PlanList(taskId: widget.task.taskId)),
